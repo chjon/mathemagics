@@ -1,11 +1,14 @@
 package xyz.jonathanchung.mathemagics.linalg;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class MatrixTest {
+
 	@Test
 	public void zeroDimensionConstructorTest () {
 		Matrix matrix = new Matrix(0, 0);
@@ -125,7 +128,7 @@ public class MatrixTest {
 			assertTrue(matrix1.equals(sumMatrix.add(matrix1)));
 			assertTrue(sumMatrix.equals(matrix1.add(matrix2)));
 		} catch (IncompatibleDimensionException ex) {
-			Assert.fail("Dimensions are the same - IncompatibleDimensionException should not be thrown");
+			Assertions.fail("Dimensions are the same - IncompatibleDimensionException should not be thrown");
 		}
 	}
 
@@ -153,7 +156,7 @@ public class MatrixTest {
 			assertTrue(matrix1.equals(differenceMatrix.subtract(matrix1)));
 			assertTrue(differenceMatrix.equals(matrix1.subtract(matrix2)));
 		} catch (IncompatibleDimensionException ex) {
-			Assert.fail("Dimensions are the same - IncompatibleDimensionException should not be thrown");
+			Assertions.fail("Dimensions are the same - IncompatibleDimensionException should not be thrown");
 		}
 	}
 
@@ -195,7 +198,7 @@ public class MatrixTest {
 		try {
 			assertTrue(matrix1.multiply(matrix1.transpose()).equals(matrix2));
 		} catch (IncompatibleDimensionException ex) {
-			Assert.fail("Dimensions are valid - IncompatibleDimensionException should not be thrown");
+			Assertions.fail("Dimensions are valid - IncompatibleDimensionException should not be thrown");
 		}
 	}
 
@@ -209,7 +212,7 @@ public class MatrixTest {
 
 		try {
 			matrix1.multiply(matrix1);
-			Assert.fail("Dimensions are invalid - IncompatibleDimensionException should be thrown");
+			Assertions.fail("Dimensions are invalid - IncompatibleDimensionException should be thrown");
 		} catch (IncompatibleDimensionException ex) {
 			// This is expected
 		}
