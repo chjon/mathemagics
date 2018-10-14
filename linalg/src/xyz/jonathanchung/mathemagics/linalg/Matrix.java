@@ -1,5 +1,7 @@
 package xyz.jonathanchung.mathemagics.linalg;
 
+import xyz.jonathanchung.mathemagics.calc.PrecisionUtils;
+
 /**
  * This class describes an n * m matrix of numbers
  */

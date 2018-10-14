@@ -1,4 +1,4 @@
-package xyz.jonathanchung.mathemagics.linalg;
+package xyz.jonathanchung.mathemagics.calc;
 
 public class PrecisionUtils {
 	public static double absError (double d1, double d2) {
