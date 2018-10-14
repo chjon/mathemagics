@@ -107,8 +107,20 @@ public class Matrix {
 	 *
 	 * @return the number of columns in the matrix
 	 */
-	public int getCols() {
+	public int getCols () {
 		return this.cols;
+	}
+
+	/**
+	 * Get a specified element from the matrix
+	 *
+	 * @param row the row of the desired element
+	 * @param col the column of the desired element
+	 *
+	 * @return the element at the specified row and column
+	 */
+	public double get (int row, int col) {
+		return this.elements[row][col];
 	}
 
 	/**
@@ -172,6 +184,42 @@ public class Matrix {
 	}
 
 	// Matrix operations -----------------------------------------------------------------------------------------------
+
+	/**
+	 * Determine whether two matrices are equal (no error)
+	 *
+	 * @param other the matrix to compare with
+	 *
+	 * @return true if the matrices are equal
+	 *         false if the matrices are not equal
+	 */
+	public boolean equals(Matrix other) {
+		return equals(other, 0);
+	}
+
+	/**
+	 * Determine whether two matrices are equal (with some acceptable error)
+	 *
+	 * @param other the matrix to compare with
+	 * @param acceptableError the maximum acceptable relative error
+	 *
+	 * @return true if the matrices are equal
+	 *         false if the matrices are not equal
+	 */
+	public boolean equals(Matrix other, double acceptableError) {
+		// Check for equal dimensions
+		if (this.rows != other.rows || this.cols != other.cols) {
+			return false;
+		}
+
+		for (int i = 0; i < this.rows; i++) {
+			for (int j = 0; j < this.cols; j++) {
+				if (!PrecisionUtils.equals(this.elements[i][j], other.elements[i][j], acceptableError)) return false;
+			}
+		}
+
+		return true;
+	}
 
 	/**
 	 * Add a matrix to this one by adding their corresponding elements
