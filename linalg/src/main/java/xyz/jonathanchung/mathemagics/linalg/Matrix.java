@@ -4,6 +4,10 @@ package xyz.jonathanchung.mathemagics.linalg;
  * This class describes an n * m matrix of numbers
  */
 public class Matrix {
+	/**
+	 * The acceptable error for float equality checks
+	 */
+	static double EPSILON = 1e-10;
 
 	// Fields ----------------------------------------------------------------------------------------------------------
 
@@ -91,6 +95,22 @@ public class Matrix {
 		}
 	}
 
+	/**
+	 * Copy constructor
+	 * @param matrix the matrix to copy from
+	 */
+	public Matrix (Matrix matrix) {
+		this.rows = matrix.rows;
+		this.cols = matrix.cols;
+		this.elements = new double[this.rows][this.cols];
+
+		for (int i = 0; i < this.rows; i++) {
+			for (int j = 0; j < this.cols; j++) {
+				this.elements[i][j] = matrix.elements[i][j];
+			}
+		}
+	}
+
 	// Accessors -------------------------------------------------------------------------------------------------------
 
 	/**
@@ -121,6 +141,40 @@ public class Matrix {
 	 */
 	public double get (int row, int col) {
 		return this.elements[row][col];
+	}
+
+	/**
+	 * Get the vector containing the specified row
+	 *
+	 * @param row the index of the desired row
+	 *
+	 * @return the vector containing the specified row
+	 */
+	public Vector getRow (int row) {
+		Vector rowVector = new Vector(this.cols);
+
+		for (int i = 0; i < this.cols; i++) {
+			rowVector.elements[i][0] = this.elements[row][i];
+		}
+
+		return rowVector;
+	}
+
+	/**
+	 * Get the vector containing the specified column
+	 *
+	 * @param col the index of the desired column
+	 *
+	 * @return the vector containing the specified column
+	 */
+	public Vector getCol (int col) {
+		Vector colVector = new Vector(this.rows);
+
+		for (int i = 0; i < this.rows; i++) {
+			colVector.elements[i][0] = this.elements[i][col];
+		}
+
+		return colVector;
 	}
 
 	/**
@@ -194,19 +248,19 @@ public class Matrix {
 	 *         false if the matrices are not equal
 	 */
 	public boolean equals(Matrix other) {
-		return equals(other, 0);
+		return equals(other, EPSILON);
 	}
 
 	/**
 	 * Determine whether two matrices are equal (with some acceptable error)
 	 *
 	 * @param other the matrix to compare with
-	 * @param acceptableError the maximum acceptable relative error
+	 * @param epsilon the maximum acceptable relative error
 	 *
 	 * @return true if the matrices are equal
 	 *         false if the matrices are not equal
 	 */
-	public boolean equals(Matrix other, double acceptableError) {
+	public boolean equals(Matrix other, double epsilon) {
 		// Check for equal dimensions
 		if (this.rows != other.rows || this.cols != other.cols) {
 			return false;
@@ -214,7 +268,7 @@ public class Matrix {
 
 		for (int i = 0; i < this.rows; i++) {
 			for (int j = 0; j < this.cols; j++) {
-				if (!PrecisionUtils.equals(this.elements[i][j], other.elements[i][j], acceptableError)) return false;
+				if (!PrecisionUtils.equalsAbs(this.elements[i][j], other.elements[i][j], epsilon)) return false;
 			}
 		}
 
@@ -345,5 +399,38 @@ public class Matrix {
 		}
 
 		return transpose;
+	}
+
+	/**
+	 * Determine the matrix's row echelon form (REF) with partial pivoting
+	 *
+	 * @return the matrix's REF
+	 */
+	public Matrix ref () {
+		// Copy the matrix
+		Matrix ref = new Matrix(this);
+
+		// Reduce each column
+		for (int i = 0; i < ref.rows && i < ref.cols; i++) {
+			// Find the largest value in the column to be used as a pivot
+			for (int j = i + 1; j < ref.rows; j++) {
+				if (Math.abs(ref.elements[j][i]) > Math.abs(ref.elements[i][i])) {
+					ref.swapRows(i, j);
+				}
+			}
+
+			// Reduce each of the rows below the current row
+			for (int j = i + 1; j < ref.rows; j++) {
+				// Reduce the row
+				double ratio = ref.elements[j][i] / ref.elements[i][i];
+				for (int k = i + 1; k < ref.cols; k++) {
+					ref.elements[j][k] -= ref.elements[i][k] * ratio;
+				}
+
+				ref.elements[j][i] = 0;
+			}
+		}
+
+		return ref;
 	}
 }

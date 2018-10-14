@@ -36,7 +36,7 @@ public class MatrixTest {
 
 		for (int i = 0; i < matrix.getRows(); i++) {
 			for (int j = 0; j < matrix.getCols(); j++) {
-				assertTrue(PrecisionUtils.equals(vals[i][j], matrix.get(i, j), 0));
+				assertTrue(PrecisionUtils.equalsAbs(vals[i][j], matrix.get(i, j), 0));
 			}
 		}
 	}
@@ -54,9 +54,9 @@ public class MatrixTest {
 		for (int i = 0; i < matrix.getRows(); i++) {
 			for (int j = 0; j < matrix.getCols(); j++) {
 				if (j >= vals[i].length) {
-					assertTrue(PrecisionUtils.equals(0, matrix.get(i, j), 0));
+					assertTrue(PrecisionUtils.equalsAbs(0, matrix.get(i, j), 0));
 				} else {
-					assertTrue(PrecisionUtils.equals(vals[i][j], matrix.get(i, j), 0));
+					assertTrue(PrecisionUtils.equalsAbs(vals[i][j], matrix.get(i, j), 0));
 				}
 			}
 		}
@@ -213,5 +213,36 @@ public class MatrixTest {
 		} catch (IncompatibleDimensionException ex) {
 			// This is expected
 		}
+	}
+
+	@Test
+	public void matrixRefTest () {
+		Matrix matrix1 = new Matrix(new double[][] {
+				{ 0, -3,  8,  3, -2},
+				{-5, -4, -3, -2, -1},
+				{-1, -2, -3, -4, -5},
+		});
+
+		Matrix ref = new Matrix(new double[][] {
+				{-5, -4, -3.0, -2.0, -1},
+				{ 0, -3,  8.0,  3.0, -2},
+				{ 0,  0, -5.6, -4.8, -4},
+		});
+
+		assertTrue(matrix1.ref().equals(ref));
+
+		Matrix matrix2 = new Matrix(new double[][] {
+				{ 1,  2, 1},
+				{-2, -3, 1},
+				{ 3,  5, 0},
+		});
+
+		Matrix ref2 = new Matrix(new double[][] {
+				{3, 5,    0},
+				{0, 1/3d, 1},
+				{0, 0,    0},
+		});
+
+		assertTrue(matrix2.ref().equals(ref2));
 	}
 }

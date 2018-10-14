@@ -15,6 +15,17 @@ public class Vector extends Matrix {
 	}
 
 	/**
+	 * Get the element at a specific index
+	 *
+	 * @param index the index of the desired element
+	 *
+	 * @return the element at the specified index
+	 */
+	public double get (int index) {
+		return this.elements[index][0];
+	}
+
+	/**
 	 * Calculate the square of the vector's magnitude
 	 *
 	 * @return the square of the vector's magnitude

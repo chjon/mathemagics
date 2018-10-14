@@ -9,9 +9,14 @@ public class PrecisionUtils {
 		return Math.abs((d1 - d2) / d2);
 	}
 
-	public static boolean equals (double d1, double d2, double acceptableError) {
+	public static boolean equalsRel (double d1, double d2, double epsilon) {
 		if (d1 == d2) return true;
-		return	relError(d1, d2) <= acceptableError ||
-				relError(d2, d1) <= acceptableError;
+		return	relError(d1, d2) <= epsilon ||
+				relError(d2, d1) <= epsilon;
+	}
+
+	public static boolean equalsAbs (double d1, double d2, double epsilon) {
+		if (d1 == d2) return true;
+		return	absError(d1, d2) <= epsilon;
 	}
 }
