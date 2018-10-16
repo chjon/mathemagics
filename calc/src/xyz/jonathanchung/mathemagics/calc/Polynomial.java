@@ -1,19 +1,20 @@
 package xyz.jonathanchung.mathemagics.calc;
 
 public class Polynomial implements Function {
+	public static final Polynomial ZERO = new Polynomial(0);
+	public static final Polynomial ONE  = new Polynomial(1);
+
 	/**
 	 * Array of all the coefficients in increasing order by degree
 	 */
 	private final double[] coeffs;
 
 	/**
-	 * Empty constructor for a default polynomial
+	 * Constructor for a polynomial given coefficients
+	 *
+	 * @param coeffs the coefficients for the polynomial, from the least-order term to the highest-order term
 	 */
-	public Polynomial () {
-		this(0);
-	}
-
-	public Polynomial (double... coeffs) {
+	public Polynomial (final double... coeffs) {
 		// Handle an empty coefficient array
 		if (coeffs == null || coeffs.length == 0) {
 			this.coeffs = new double[1];
@@ -40,22 +41,31 @@ public class Polynomial implements Function {
 	public double evaluate(double x) {
 		double ans = 0;
 
-		// Handle non-constant terms
-		for (int i = coeffs.length - 1; i > 0; i--) {
-			ans += coeffs[i];
+		// Solve by Horner's rule
+		for (int i = coeffs.length - 1; i >= 0; i--) {
 			ans *= x;
-		}
-
-		// Handle constant term
-		if (coeffs.length > 0) {
-			ans += coeffs[0];
+			ans += coeffs[i];
 		}
 
 		return ans;
 	}
 
+	/**
+	 * Get the degree of the polynomial
+	 *
+	 * @return the degree of the polynomial
+	 */
 	public int degree () {
 		return coeffs.length - 1;
+	}
+
+	/**
+	 * Determine whether a polynomial is zero
+	 * @return true if the polynomial is zero
+	 *         false if the polynomial is non-zero
+	 */
+	public boolean isZero () {
+		return equals(ZERO);
 	}
 
 	/**
@@ -65,7 +75,14 @@ public class Polynomial implements Function {
 	 *
 	 * @return the sum of the two polynomials
 	 */
-	public Polynomial add (Polynomial other) {
+	public Polynomial add (final Polynomial other) {
+		// Check if either polynomial is zero
+		if (this.isZero()) {
+			return other;
+		} else if (other.isZero()) {
+			return this;
+		}
+
 		final int thisLength  = this.coeffs.length;
 		final int otherLength = other.coeffs.length;
 		int degree = 0;
@@ -109,6 +126,63 @@ public class Polynomial implements Function {
 	}
 
 	/**
+	 * Multiply two polynomials
+	 *
+	 * @param other the polynomial to multiply by
+	 *
+	 * @return the product of the multiplication of the polynomials
+	 */
+	public Polynomial multiply (final Polynomial other) {
+		// Check if either polynomial is zero
+		if (this.isZero() || other.isZero()) {
+			return ZERO;
+		}
+
+		final int degree = this.degree() + other.degree();
+		final double[] resultCoeffs = new double[degree + 1];
+
+		// Multiply every term in the polynomial by every term in the other polynomial
+		for (int i = 0; i < this.coeffs.length; i++) {
+			for (int j = 0; j < other.coeffs.length; j++) {
+				resultCoeffs[i + j] += this.coeffs[i] * other.coeffs[j];
+			}
+		}
+
+		return new Polynomial(resultCoeffs);
+	}
+
+	/**
+	 * Raise a polynomial to an exponent
+	 *
+	 * @param exponent the exponent to which to raise the polynomial
+	 *
+	 * @return the @code{exponent} power of the polynomial
+	 */
+	public Polynomial pow (int exponent) {
+		// Handle the zero exponent
+		if (exponent == 0) {
+			if (this.isZero()) {
+				return null;
+			} else {
+				return ONE;
+			}
+
+		// Handle an exponent of 1
+		} else if (exponent == 1) {
+			return this;
+		}
+
+		// Perform the exponentiation
+		Polynomial pow = this.pow(exponent / 2);
+		pow = pow.multiply(pow);
+		if (exponent % 2 == 0) {
+			return pow;
+		} else {
+			return this.multiply(pow);
+		}
+	}
+
+	/**
 	 * Determine whether two polynomials are equal (have the same degree)
 	 *
 	 * @param other the polynomial to check with
@@ -116,7 +190,7 @@ public class Polynomial implements Function {
 	 * @return true if the polynomials are equal
 	 *         false if the polynomials are not equal
 	 */
-	public boolean equals (Polynomial other) {
+	public boolean equals (final Polynomial other) {
 		// Make sure the polynomials are of the same degree
 		if (this.degree() != other.degree()) return false;
 

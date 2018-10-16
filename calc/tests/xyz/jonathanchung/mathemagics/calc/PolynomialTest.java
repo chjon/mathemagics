@@ -89,4 +89,20 @@ class PolynomialTest {
 
 		assertTrue(sum.equals(poly1.add(poly2)));
 	}
+
+	@Test
+	public void multiplicationTest () {
+		Polynomial poly    = new Polynomial(1, 4);
+		Polynomial product = new Polynomial(1, 8, 16);
+
+		assertTrue(product.equals(poly.multiply(poly)));
+	}
+
+	@Test
+	public void powTest () {
+		Polynomial poly = new Polynomial(1,1);
+		Polynomial pow  = new Polynomial(1, 5, 10, 10, 5, 1);
+
+		assertTrue(pow.equals(poly.pow(5)));
+	}
 }
