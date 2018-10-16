@@ -15,6 +15,22 @@ public class Polynomial implements Function {
 	 * @param coeffs the coefficients for the polynomial, from the least-order term to the highest-order term
 	 */
 	public Polynomial (final double... coeffs) {
+		this(coeffs, false);
+	}
+
+	/**
+	 * Constructor for a polynomial given coefficients
+	 *
+	 * @param coeffs the coefficients for the polynomial, from the least-order term to the highest-order term
+	 * @param useArray whether the array that is passed in can be used as the member array
+	 */
+	private Polynomial (final double[] coeffs, boolean useArray) {
+		// Check whether to use the given array
+		if (useArray) {
+			this.coeffs = coeffs;
+			return;
+		}
+
 		// Handle an empty coefficient array
 		if (coeffs == null || coeffs.length == 0) {
 			this.coeffs = new double[1];
@@ -115,14 +131,14 @@ public class Polynomial implements Function {
 
 		// Use the temporary coefficient array if it is the correct length
 		if (degree == tempCoeffs.length - 1) {
-			return new Polynomial(tempCoeffs);
+			return new Polynomial(tempCoeffs, false);
 		}
 
 		// Create a new coefficient array if the original is the wrong length
 		final double[] newCoeffs = new double[degree + 1];
-		System.arraycopy(tempCoeffs, 0, newCoeffs, 0, degree);
+		System.arraycopy(tempCoeffs, 0, newCoeffs, 0, degree + 1);
 
-		return new Polynomial(newCoeffs);
+		return new Polynomial(newCoeffs, true);
 	}
 
 	/**
@@ -138,6 +154,7 @@ public class Polynomial implements Function {
 			return ZERO;
 		}
 
+		// Create an array to hold the new coefficients
 		final int degree = this.degree() + other.degree();
 		final double[] resultCoeffs = new double[degree + 1];
 
@@ -148,7 +165,7 @@ public class Polynomial implements Function {
 			}
 		}
 
-		return new Polynomial(resultCoeffs);
+		return new Polynomial(resultCoeffs, true);
 	}
 
 	/**
@@ -183,6 +200,49 @@ public class Polynomial implements Function {
 	}
 
 	/**
+	 * Perform polynomial division (long division)
+	 *
+	 * @param divisor the polynomial to divideBy by
+	 *
+	 * @return the quotient of the polynomial division
+	 */
+	public Polynomial divideBy(Polynomial divisor) {
+		// Check if we are dividing by zero
+		if (divisor.isZero()) {
+			throw new DivisionByZeroException();
+		}
+
+		// Check if the quotient is zero
+		final int degree = this.degree() - divisor.degree();
+		if (this.isZero() || degree < 0) {
+			return Polynomial.ZERO;
+		}
+
+		double[] resultCoeffs   = new double[degree + 1];
+		double[] dividendCoeffs = new double[this.coeffs.length];
+		System.arraycopy(this.coeffs, 0, dividendCoeffs, 0, dividendCoeffs.length);
+
+		int dividendIndex = dividendCoeffs.length - 1;
+		int resultIndex = resultCoeffs.length - 1;
+
+		// Divide each term
+		while (resultIndex >= 0) {
+			final double factor = dividendCoeffs[dividendIndex] / divisor.coeffs[divisor.coeffs.length - 1];
+			resultCoeffs[resultIndex] = factor;
+
+			// Subtract a multiple of the divisor from the dividend
+			for (int divisorIndex = divisor.coeffs.length - 1; divisorIndex >= 0; divisorIndex--, dividendIndex--) {
+				dividendCoeffs[dividendIndex] -= factor * divisor.coeffs[divisorIndex];
+			}
+
+			dividendIndex += divisor.coeffs.length - 1;
+			resultIndex --;
+		}
+
+		return new Polynomial(resultCoeffs, true);
+	}
+
+	/**
 	 * Determine whether two polynomials are equal (have the same degree)
 	 *
 	 * @param other the polynomial to check with
@@ -191,6 +251,11 @@ public class Polynomial implements Function {
 	 *         false if the polynomials are not equal
 	 */
 	public boolean equals (final Polynomial other) {
+		// Check if the other polynomial is null
+		if (other == null) {
+			return false;
+		}
+
 		// Make sure the polynomials are of the same degree
 		if (this.degree() != other.degree()) return false;
 
@@ -202,8 +267,18 @@ public class Polynomial implements Function {
 		return true;
 	}
 
+	/**
+	 * Get a string representation of the polynomial
+	 *
+	 * @return a string representation of the polynomial
+	 */
 	@Override
 	public String toString() {
+		// Check if this is the zero polynomial
+		if (isZero()) {
+			return "0";
+		}
+
 		StringBuilder sb = new StringBuilder();
 
 		for (int i = 0; i < coeffs.length; i++) {
@@ -217,10 +292,13 @@ public class Polynomial implements Function {
 			sb.append(coeff).append(" x^(").append(i).append(") ");
 		}
 
-		if (sb.length() == 0) {
-			return "0";
-		}
-
 		return sb.toString();
+	}
+
+	/**
+	 * The class {@code DivisionByZeroException} is thrown when a division by zero is attempted
+	 */
+	public class DivisionByZeroException extends RuntimeException {
+
 	}
 }

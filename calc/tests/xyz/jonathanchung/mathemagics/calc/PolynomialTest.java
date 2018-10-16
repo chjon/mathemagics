@@ -66,10 +66,17 @@ class PolynomialTest {
 	}
 
 	@Test
-	public void quadraticTest () {
-		Polynomial poly = new Polynomial(3, 2, 3);
+	public void evaluationTest () {
+		Polynomial poly = new Polynomial(1, 2, 3, 4, 5);
 
-		assertEquals(19, poly.evaluate(2));
+		assertEquals(319, poly.evaluate(-3));
+	}
+
+	@Test
+	public void addZeroTest () {
+		Polynomial poly = new Polynomial(1, 2, 3, 4, 5);
+
+		assertTrue(poly.equals(poly.add(Polynomial.ZERO)));
 	}
 
 	@Test
@@ -91,6 +98,20 @@ class PolynomialTest {
 	}
 
 	@Test
+	public void mulZeroTest () {
+		Polynomial poly = new Polynomial(1, 2, 3, 4, 5);
+
+		assertTrue(Polynomial.ZERO.equals(poly.multiply(Polynomial.ZERO)));
+	}
+
+	@Test
+	public void mulOneTest () {
+		Polynomial poly = new Polynomial(1, 2, 3, 4, 5);
+
+		assertTrue(poly.equals(poly.multiply(Polynomial.ONE)));
+	}
+
+	@Test
 	public void multiplicationTest () {
 		Polynomial poly    = new Polynomial(1, 4);
 		Polynomial product = new Polynomial(1, 8, 16);
@@ -104,5 +125,14 @@ class PolynomialTest {
 		Polynomial pow  = new Polynomial(1, 5, 10, 10, 5, 1);
 
 		assertTrue(pow.equals(poly.pow(5)));
+	}
+
+	@Test
+	public void divTest () {
+		Polynomial dividend = new Polynomial(1, 3, 3, 1).pow(10);
+		Polynomial divisor  = new Polynomial(1, 2, 1).pow(3);
+		Polynomial quotient = new Polynomial(1, 3, 3, 1).pow(8);
+
+		assertTrue(quotient.equals(dividend.divideBy(divisor)));
 	}
 }
