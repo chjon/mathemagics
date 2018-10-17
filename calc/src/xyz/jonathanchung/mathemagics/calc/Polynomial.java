@@ -169,6 +169,30 @@ public class Polynomial implements Function {
 	}
 
 	/**
+	 * Multiply the polynomial by a scalar
+	 *
+	 * @param scalar the scalar by which to multiply the polynomial
+	 *
+	 * @return the product of the multiplication of the polynomial and the scalar
+	 */
+	public Polynomial multiply (final double scalar) {
+		// Check for zeros
+		if (scalar == 0 || isZero()) {
+			return ZERO;
+		}
+
+		// Create an array to hold the new coefficients
+		final double[] resultCoeffs = new double[this.coeffs.length];
+
+		// Multiply every term in the polynomial by the scalar
+		for (int i = 0; i < this.coeffs.length; i++) {
+			resultCoeffs[i] = this.coeffs[i] * scalar;
+		}
+
+		return new Polynomial(resultCoeffs, true);
+	}
+
+	/**
 	 * Raise a polynomial to an exponent
 	 *
 	 * @param exponent the exponent to which to raise the polynomial
