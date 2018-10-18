@@ -142,6 +142,63 @@ public class Polynomial implements Function {
 	}
 
 	/**
+	 * Subtract one polynomial from another two polynomials
+	 *
+	 * @param other the polynomial to subtract from this one
+	 *
+	 * @return the difference of the two polynomials
+	 */
+	public Polynomial sub (final Polynomial other) {
+		// Check if either polynomial is zero
+		if (this.isZero()) {
+			return other.multiply(-1);
+		} else if (other.isZero()) {
+			return this;
+		}
+
+		final int thisLength  = this.coeffs.length;
+		final int otherLength = other.coeffs.length;
+		int degree = 0;
+
+		// Create array to hold the coefficients temporarily
+		final double[] tempCoeffs = new double[Math.max(thisLength, otherLength)];
+
+		// Fill the array of coefficients with the sums of the polynomial coefficients
+		for (int i = 0; i < thisLength || i < otherLength; i++) {
+			double coeff = 0;
+
+			// Check if this polynomial has coefficients of degree i
+			if (i < thisLength) {
+				coeff += this.coeffs[i];
+			}
+
+			// Check if the other polynomial has coefficients of degree i
+			if (i < otherLength) {
+				coeff -= other.coeffs[i];
+			}
+
+			// Put the sum into the array if it is non-zero
+			if (coeff != 0) {
+				tempCoeffs[i] = coeff;
+
+				// Update the degree for non-zero coefficients
+				degree = i;
+			}
+		}
+
+		// Use the temporary coefficient array if it is the correct length
+		if (degree == tempCoeffs.length - 1) {
+			return new Polynomial(tempCoeffs, false);
+		}
+
+		// Create a new coefficient array if the original is the wrong length
+		final double[] newCoeffs = new double[degree + 1];
+		System.arraycopy(tempCoeffs, 0, newCoeffs, 0, degree + 1);
+
+		return new Polynomial(newCoeffs, true);
+	}
+
+	/**
 	 * Multiply two polynomials
 	 *
 	 * @param other the polynomial to multiply by

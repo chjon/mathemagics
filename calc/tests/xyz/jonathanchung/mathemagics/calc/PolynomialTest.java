@@ -98,6 +98,39 @@ class PolynomialTest {
 	}
 
 	@Test
+	public void sumToZeroTest () {
+		Polynomial poly1 = new Polynomial( 1,  2,  3,  4);
+		Polynomial poly2 = new Polynomial(-1, -2, -3, -4);
+
+		assertTrue(Polynomial.ZERO.equals(poly1.add(poly2)));
+	}
+
+	@Test
+	public void diffTest () {
+		Polynomial poly1 = new Polynomial( 1,  2, 3, 4);
+		Polynomial poly2 = new Polynomial( 4,  3, 2, 1);
+		Polynomial diff  = new Polynomial(-3, -1, 1, 3);
+
+		assertTrue(diff.equals(poly1.sub(poly2)));
+	}
+
+	@Test
+	public void diffDiffDegreeTest () {
+		Polynomial poly1 = new Polynomial( 1, 2, 3, 4);
+		Polynomial poly2 = new Polynomial( 4, 2, 2);
+		Polynomial diff  = new Polynomial(-3, 0, 1, 4);
+
+		assertTrue(diff.equals(poly1.sub(poly2)));
+	}
+
+	@Test
+	public void diffToZeroTest () {
+		Polynomial poly = new Polynomial( 1,  2, 3, 4);
+
+		assertTrue(Polynomial.ZERO.equals(poly.sub(poly)));
+	}
+
+	@Test
 	public void mulZeroTest () {
 		Polynomial poly = new Polynomial(1, 2, 3, 4, 5);
 
