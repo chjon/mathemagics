@@ -324,6 +324,27 @@ public class Polynomial implements Function {
 	}
 
 	/**
+	 * Differentiate the polynomial
+	 *
+	 * @return the polynomial's derivative
+	 */
+	public Polynomial differentiate () {
+		// The derivative of a constant is zero
+		if (this.coeffs.length == 1) {
+			return Polynomial.ZERO;
+		}
+
+		final double[] newCoeffs = new double[this.coeffs.length - 1];
+
+		// Multiply each term by its exponent
+		for (int i = 0; i < newCoeffs.length; ++i) {
+			newCoeffs[i] = this.coeffs[i + 1] * (i + 1);
+		}
+
+		return new Polynomial(newCoeffs, true);
+	}
+
+	/**
 	 * Determine whether two polynomials are equal (have the same degree)
 	 *
 	 * @param other the polynomial to check with

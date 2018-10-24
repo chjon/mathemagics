@@ -168,4 +168,20 @@ class PolynomialTest {
 
 		assertTrue(quotient.equals(dividend.divideBy(divisor)));
 	}
+
+	@Test
+	public void differentiateTest () {
+		Polynomial poly = new Polynomial(1, 2, 3, 4, 5, 6, 7, 8, 9);
+		Polynomial diff = new Polynomial(2, 6, 12, 20, 30, 42, 56, 72);
+
+		assertTrue(poly.differentiate().equals(diff));
+	}
+
+	@Test
+	public void differentiateConstantTest () {
+		Polynomial poly = new Polynomial(42);
+
+		assertTrue(poly.differentiate().equals(Polynomial.ZERO));
+		assertTrue(Polynomial.ZERO.differentiate().equals(Polynomial.ZERO));
+	}
 }
