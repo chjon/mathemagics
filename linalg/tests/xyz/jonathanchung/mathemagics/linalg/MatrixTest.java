@@ -249,4 +249,77 @@ public class MatrixTest {
 
 		assertTrue(matrix2.ref().equals(ref2));
 	}
+
+	@Test
+	public void matrixRankTest () {
+		Matrix matrix1 = new Matrix(new double[][] {
+				{-5, -4, -3.0, -2.0, -1},
+				{ 0, -3,  8.0,  3.0, -2},
+				{ 0,  0,    0, -4.8, -4},
+		});
+
+		Matrix matrix2 = new Matrix(new double[][] {
+				{-5, -4, -3.0, -2.0, -1},
+				{ 0, -3,  8.0,  3.0, -2},
+				{ 0, -6, 16.0,  6.0, -4},
+		});
+
+		assertEquals(3, matrix1.rank());
+		assertEquals(2, matrix2.rank());
+	}
+
+	@Test
+	public void matrixIsDiagonalTest () {
+		Matrix matrix = new Matrix(new double[][] {
+				{1, 0, 0},
+				{0, 5, 0},
+				{0, 0, 7},
+		});
+
+		assertTrue(matrix.isDiagonal());
+	}
+
+	@Test
+	public void matrixIsNotDiagonalTest () {
+		Matrix matrix = new Matrix(new double[][] {
+				{1, 0, 0},
+				{0, 5, 0},
+				{0, 1, 7},
+		});
+
+		assertFalse(matrix.isDiagonal());
+	}
+
+	@Test
+	public void matrixIsNotDiagonalDimensionsTest () {
+		Matrix matrix = new Matrix(new double[][] {
+				{1, 0, 0, 0},
+				{0, 5, 0, 0},
+				{0, 0, 7, 0},
+		});
+
+		assertFalse(matrix.isDiagonal());
+	}
+
+	@Test
+	public void matrixIsRefTest () {
+		Matrix ref = new Matrix(new double[][] {
+				{-5, -4, -3.0, -2.0, -1},
+				{ 0, -3,  8.0,  3.0, -2},
+				{ 0,  0,    0, -4.8, -4},
+		});
+
+		assertTrue(ref.isRef());
+	}
+
+	@Test
+	public void matrixIsNotRefTest () {
+		Matrix ref = new Matrix(new double[][] {
+				{-5, -4, -3.0, -2.0, -1},
+				{ 0, -3,  8.0,  3.0, -2},
+				{ 0,  1,    0, -4.8, -4},
+		});
+
+		assertFalse(ref.isRef());
+	}
 }

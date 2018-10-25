@@ -209,6 +209,105 @@ public class Matrix {
 		return output.toString();
 	}
 
+	// Matrix properties -----------------------------------------------------------------------------------------------
+
+	/**
+	 * Determine the rank of the matrix
+	 *
+	 * @return the rank of the matrix
+	 */
+	public int rank () {
+		Matrix ref = this;
+
+		// Calculate the REF if the matrix is not already in REF
+		if (!isRef()) {
+			ref = ref();
+		}
+
+		// Determine the rank of the matrix
+		for (int i = 0; i < ref.rows; ++i) {
+			// Check if every element in the row is zero
+			boolean rowIsZero = true;
+			for (int j = i; j < ref.cols && rowIsZero; ++j) {
+				if (ref.elements[i][j] != 0) {
+					rowIsZero = false;
+				}
+			}
+
+			// The matrix's rank is the index of the first zero row
+			if (rowIsZero) {
+				return i;
+			}
+		}
+
+		return rows;
+	}
+
+	/**
+	 * Determine whether the matrix is square
+	 *
+	 * @return true if the matrix is square
+	 *         false if the matrix is not square
+	 */
+	public boolean isSquare () {
+		return rows == cols;
+	}
+
+	/**
+	 * Determine whether a matrix is in row echelon form
+	 *
+	 * @return true if the matrix is in REF
+	 *         false if the matrix is not in REF
+	 */
+	public boolean isRef () {
+		// The index of the first non-zero entry in the previous row
+		int leadingIndex = -1;
+
+		for (int i = 0; i < rows; ++i) {
+			// Find the index of the first non-zero entry in the row
+			int j = 0;
+			while (j < cols && elements[i][j] == 0) {
+				++j;
+			}
+
+			// Non-zero entries must be to the right of the leading non-zero entry of the previous row for REF
+			if (j <= leadingIndex) {
+				return false;
+
+			// Set the leading index to that of the current row
+			} else {
+				leadingIndex = j;
+			}
+		}
+
+		return true;
+	}
+
+	/**
+	 * Determine whether a matrix is diagonal
+	 *
+	 * @return true if the matrix is diagonal
+	 *         false if the matrix is not diagonal
+	 */
+	public boolean isDiagonal () {
+		// Diagonal matrices must be square
+		if (!isSquare()) {
+			return false;
+		}
+
+		// Check elements in the matrix to determine whether it is diagonal
+		for (int i = 0; i < rows; ++i) {
+			for (int j = 0; j < cols; ++j) {
+				// Only elements on the diagonal can be non-zero
+				if (i != j && elements[i][j] != 0) {
+					return false;
+				}
+			}
+		}
+
+		return true;
+	}
+
 	// Mutators --------------------------------------------------------------------------------------------------------
 
 	/**
