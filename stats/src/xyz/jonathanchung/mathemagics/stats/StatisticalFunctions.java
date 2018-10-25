@@ -18,6 +18,84 @@ public class StatisticalFunctions {
 	}
 
 	/**
+	 * Calculate the mean of the data
+	 *
+	 * @param data the data for which to calculate the mean
+	 *
+	 * @return the mean of the data
+	 */
+	public static double mean (double... data) {
+		if (data == null || data.length == 0) {
+			return 0;
+		}
+
+		return sum(data) / data.length;
+	}
+
+	/**
+	 * Calculate the median of a sorted array. Behaviour is undefined for unsorted arrays
+	 *
+	 * @param sortedData the sorted data for which to calculate the median
+	 *
+	 * @return the median of the sorted array
+	 */
+	public static double medianSorted (double... sortedData) {
+		if (sortedData == null || sortedData.length == 0) {
+			return 0;
+		}
+
+		// Handle odd-length data
+		if (sortedData.length % 2 == 1) {
+			return sortedData[sortedData.length / 2];
+		}
+
+		// Handle even-length data
+		int midIndex = sortedData.length / 2;
+		return (sortedData[midIndex] + sortedData[midIndex - 1]) / 2d;
+	}
+
+	/**
+	 * Calculate the one of the modes of a sorted array. Behaviour is undefined for unsorted arrays
+	 *
+	 * @param sortedData the sorted data for which to calculate the mode
+	 *
+	 * @return the mode of the sorted array
+	 */
+	public static double modeSorted (double... sortedData) {
+		if (sortedData == null || sortedData.length == 0) {
+			return 0;
+		}
+
+		int maxLength = 1;
+		int index = 0;
+		int runningLength = 1;
+
+		for (int i = 1; i < sortedData.length; i++) {
+			// Increment the length so far
+			if (sortedData[i] == sortedData[i - 1]) {
+				++runningLength;
+				continue;
+			}
+
+			// Update the max length
+			if (runningLength > maxLength) {
+				maxLength = runningLength;
+				index = i - 1;
+			}
+
+			// Reset the length so far
+			runningLength = 1;
+		}
+
+		// Return the first element that occurred the most times
+		if (runningLength > maxLength) {
+			return sortedData[sortedData.length - 1];
+		} else {
+			return sortedData[index];
+		}
+	}
+
+	/**
 	 * Calculate the sample average
 	 *
 	 * @param data the data to average
@@ -38,15 +116,10 @@ public class StatisticalFunctions {
 	 *
 	 * @param data the data to average
 	 *
-	 * @return 0 if the list of data is empty
-	 *         the population average of the data if the list is not empty
+	 * @return the population average of the data
 	 */
 	public static double avgP (double... data) {
-		if (data == null || data.length == 0) {
-			return 0;
-		}
-
-		return sum(data) / (data.length);
+		return mean(data);
 	}
 
 	/**
@@ -58,7 +131,7 @@ public class StatisticalFunctions {
 	 *         the average of the data if the list is not empty
 	 */
 	public static double avg (double... data) {
-		return avgP(data);
+		return mean(data);
 	}
 
 	/**
@@ -151,7 +224,7 @@ public class StatisticalFunctions {
 	 * Calculate the indicator of bias in the data. If the return value exceeds 1.96, we can be 95% certain that there
 	 * is bias in the data set
 	 *
-	 * @param data the data to check for bias	
+	 * @param data the data to check for bias
 	 *
 	 * @return a value indicating the certainty that there is a bias
 	 */
