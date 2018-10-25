@@ -44,7 +44,7 @@ public class Polynomial implements Function {
 
 		// Find the degree of the polynomial
 		int degree = coeffs.length - 1;
-		for (int i = degree; i >= 0 && coeffs[i] == 0; i--) {
+		for (int i = degree; i >= 0 && coeffs[i] == 0; --i) {
 			degree--;
 		}
 
@@ -58,7 +58,7 @@ public class Polynomial implements Function {
 		double ans = 0;
 
 		// Solve by Horner's rule
-		for (int i = coeffs.length - 1; i >= 0; i--) {
+		for (int i = coeffs.length - 1; i >= 0; --i) {
 			ans *= x;
 			ans += coeffs[i];
 		}
@@ -107,7 +107,7 @@ public class Polynomial implements Function {
 		final double[] tempCoeffs = new double[Math.max(thisLength, otherLength)];
 
 		// Fill the array of coefficients with the sums of the polynomial coefficients
-		for (int i = 0; i < thisLength || i < otherLength; i++) {
+		for (int i = 0; i < thisLength || i < otherLength; ++i) {
 			double coeff = 0;
 
 			// Check if this polynomial has coefficients of degree i
@@ -164,7 +164,7 @@ public class Polynomial implements Function {
 		final double[] tempCoeffs = new double[Math.max(thisLength, otherLength)];
 
 		// Fill the array of coefficients with the sums of the polynomial coefficients
-		for (int i = 0; i < thisLength || i < otherLength; i++) {
+		for (int i = 0; i < thisLength || i < otherLength; ++i) {
 			double coeff = 0;
 
 			// Check if this polynomial has coefficients of degree i
@@ -216,8 +216,8 @@ public class Polynomial implements Function {
 		final double[] resultCoeffs = new double[degree + 1];
 
 		// Multiply every term in the polynomial by every term in the other polynomial
-		for (int i = 0; i < this.coeffs.length; i++) {
-			for (int j = 0; j < other.coeffs.length; j++) {
+		for (int i = 0; i < this.coeffs.length; ++i) {
+			for (int j = 0; j < other.coeffs.length; ++j) {
 				resultCoeffs[i + j] += this.coeffs[i] * other.coeffs[j];
 			}
 		}
@@ -242,7 +242,7 @@ public class Polynomial implements Function {
 		final double[] resultCoeffs = new double[this.coeffs.length];
 
 		// Multiply every term in the polynomial by the scalar
-		for (int i = 0; i < this.coeffs.length; i++) {
+		for (int i = 0; i < this.coeffs.length; ++i) {
 			resultCoeffs[i] = this.coeffs[i] * scalar;
 		}
 
@@ -317,7 +317,7 @@ public class Polynomial implements Function {
 			}
 
 			dividendIndex += divisor.coeffs.length - 1;
-			resultIndex --;
+			--resultIndex;
 		}
 
 		return new Polynomial(resultCoeffs, true);
@@ -362,7 +362,7 @@ public class Polynomial implements Function {
 		if (this.degree() != other.degree()) return false;
 
 		// Compare each coefficient
-		for (int i = 0; i < coeffs.length; i++) {
+		for (int i = 0; i < coeffs.length; ++i) {
 			if (this.coeffs[i] != other.coeffs[i]) return false;
 		}
 
@@ -383,7 +383,7 @@ public class Polynomial implements Function {
 
 		StringBuilder sb = new StringBuilder();
 
-		for (int i = 0; i < coeffs.length; i++) {
+		for (int i = 0; i < coeffs.length; ++i) {
 			double coeff = coeffs[i];
 			if (coeff == 0) continue;
 
