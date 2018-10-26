@@ -2,7 +2,20 @@ package xyz.jonathanchung.mathemagics.calc;
 
 public class IntegrationApproximator {
 	/**
-	 * Approximate the integral of a function using the composite trapezoidal rule
+	 * Approximate the integral of a function using the trapezoidal rule - error of O((b - a)^3)
+	 *
+	 * @param f the function whose integral to approximate
+	 * @param lowerBound the lower bound of the interval
+	 * @param upperBound the upper bound of the interval
+	 *
+	 * @return the approximation of the function's integral using the trapezoidal rule
+	 */
+	public static double trapezoidalRule (Function f, double lowerBound, double upperBound) {
+		return weightedArea(f, lowerBound, upperBound, 1, 1);
+	}
+
+	/**
+	 * Approximate the integral of a function using the composite trapezoidal rule - error of O((b - a)^2)
 	 *
 	 * @param f the function whose integral to approximate
 	 * @param lowerBound the lower bound of the interval
@@ -10,9 +23,95 @@ public class IntegrationApproximator {
 	 *
 	 * @return the approximation of the function's integral using the composite trapezoidal rule
 	 */
-	public static double compositeTrapezoidalRule (Function f, double lowerBound, double upperBound) {
-		// This is just a special case of the weighted average
-		return weightedAverage(f, lowerBound, upperBound, 1, 2, 1);
+	public static double compositeTrapezoidalRule (Function f, double lowerBound, double upperBound, int intervals) {
+		// There must be at least one interval
+		intervals = Math.max(1, intervals);
+
+		final double width = upperBound - lowerBound;
+		final double intervalWidth = width / intervals;
+		double sum = f.evaluate(lowerBound) + f.evaluate(upperBound);
+
+		// The composite trapezoidal rule is a special case of a weighted average where all interior points have weight
+		// 1 and the boundary points have weight 1 / 2
+		for (int i = 1; i < intervals; ++i) {
+			double pos = lowerBound + intervalWidth * i;
+			sum += 2 * f.evaluate(pos);
+		}
+
+		return sum * intervalWidth / 2;
+	}
+
+	/**
+	 * Approximate the integral of a function using Simpson's rule - error of O((b - a)^5)
+	 *
+	 * @param f the function whose integral to approximate
+	 * @param lowerBound the lower bound of the interval
+	 * @param upperBound the upper bound of the interval
+	 *
+	 * @return the approximation of the function's integral using Simpson's rule
+	 */
+	public static double simpsonsRule (Function f, double lowerBound, double upperBound) {
+		return weightedArea(f, lowerBound, upperBound, 1, 4, 1);
+	}
+
+	/**
+	 * Approximate the integral of a function using composite Simpson's rule - error of O((b - a)^4)
+	 *
+	 * @param f the function whose integral to approximate
+	 * @param lowerBound the lower bound of the interval
+	 * @param upperBound the upper bound of the interval
+	 *
+	 * @return the approximation of the function's integral using composite Simpson's rule
+	 */
+	public static double compositeSimpsonsRule (Function f, double lowerBound, double upperBound, int intervals) {
+		// There must be at least two intervals
+		intervals = Math.max(2, intervals);
+
+		// The interval must be divisible by two
+		intervals -= intervals % 2;
+
+		final double width = upperBound - lowerBound;
+		final double intervalWidth = width / intervals;
+		double sum = f.evaluate(lowerBound) + f.evaluate(upperBound);
+
+		for (int i = 1; i < intervals; ++i) {
+			double pos = lowerBound + intervalWidth * i;
+			if (i % 2 == 1) {
+				sum += 4 * f.evaluate(pos);
+			} else {
+				sum += 2 * f.evaluate(pos);
+			}
+		}
+
+		return sum * intervalWidth / 6;
+	}
+
+	/**
+	 * Approximate the integral of a function using Simpson's 3/8th's rule - error of O((b - a)^5)
+	 *
+	 * @param f the function whose integral to approximate
+	 * @param lowerBound the lower bound of the interval
+	 * @param upperBound the upper bound of the interval
+	 *
+	 * @return the approximation of the function's integral using Simpson's 3/8th's rule
+	 */
+	public static double simpsons3_8thsRule (Function f, double lowerBound, double upperBound) {
+		return weightedArea(f, lowerBound, upperBound, 1, 3, 3, 1);
+	}
+
+	/**
+	 * Approximate the integral of a function by multiplying a weighted average of the function by the width of the
+	 * interval
+	 *
+	 * @param f the function whose integral to approximate
+	 * @param lowerBound the lower bound of the interval
+	 * @param upperBound the upper bound of the interval
+	 *
+	 * @return the approximation of the function's integral
+	 */
+	private static double weightedArea (Function f, double lowerBound, double upperBound, double... weights) {
+		final double width = upperBound - lowerBound;
+		return weightedAverage(f, lowerBound, upperBound, weights) * Math.abs(width);
 	}
 
 	/**
