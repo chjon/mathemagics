@@ -92,6 +92,17 @@ public class VectorN extends Vector<VectorN> {
 
 
 
+	// Matrix mutators -------------------------------------------------------------------------------------------------
+
+	@Override
+	public void swapRows(int row1, int row2) {
+		final double temp = elements[row1];
+		elements[row1] = elements[row2];
+		elements[row2] = temp;
+	}
+
+
+
 	// Linear object operations ----------------------------------------------------------------------------------------
 
 	@Override
@@ -140,6 +151,8 @@ public class VectorN extends Vector<VectorN> {
 		return product;
 	}
 
+
+
 	// Matrix operations -----------------------------------------------------------------------------------------------
 
 	@Override
@@ -183,6 +196,47 @@ public class VectorN extends Vector<VectorN> {
 		System.arraycopy(this.elements, 0, transpose.elements[0], 0, this.rows);
 
 		return transpose;
+	}
+
+	@Override
+	public boolean isRef() {
+		for (int i = 1; i < rows; ++i) {
+			if (elements[i] != 0) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	@Override
+	public VectorN remove(int row, int col) {
+		if (col == 0 || this.rows == 1) {
+			return null;
+		}
+
+		return removeRow(row);
+	}
+
+	@Override
+	public VectorN removeRow(int row) {
+		if (this.rows == 1) {
+			return null;
+		}
+
+		VectorN newVector = new VectorN(this.rows - 1);
+
+		int newRow = 0;
+
+		for (int i = 0; i < this.rows; ++i) {
+			// Skip the row if it is to be removed
+			if (i == row) continue;
+
+			++newRow;
+			newVector.elements[newRow] = this.elements[i];
+		}
+
+		return newVector;
 	}
 
 

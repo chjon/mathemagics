@@ -163,6 +163,7 @@ public class MatrixNxM extends Matrix<MatrixNxM> {
 	 *
 	 * @return the rank of the matrix
 	 */
+	@Override
 	public int rank () {
 		MatrixNxM ref = this;
 
@@ -190,12 +191,7 @@ public class MatrixNxM extends Matrix<MatrixNxM> {
 		return rows;
 	}
 
-	/**
-	 * Determine whether a matrix is in row echelon form
-	 *
-	 * @return true if the matrix is in REF
-	 *         false if the matrix is not in REF
-	 */
+	@Override
 	public boolean isRef () {
 		// The index of the first non-zero entry in the previous row
 		int leadingIndex = -1;
@@ -240,26 +236,18 @@ public class MatrixNxM extends Matrix<MatrixNxM> {
 		return true;
 	}
 
+
+
 	// Mutators --------------------------------------------------------------------------------------------------------
 
-	/**
-	 * Swap the rows of a matrix
-	 *
-	 * @param row1 the index of the first row to swap
-	 * @param row2 the index of the second row to swap
-	 */
+	@Override
 	public void swapRows (int row1, int row2) {
 		double[] row1Ref = elements[row1];
 		elements[row1] = elements[row2];
 		elements[row2] = row1Ref;
 	}
 
-	/**
-	 * Swap the columns of a matrix
-	 *
-	 * @param col1 the index of the first column to swap
-	 * @param col2 the index of the second column to swap
-	 */
+	@Override
 	public void swapCols (int col1, int col2) {
 		double temp;
 
@@ -328,13 +316,6 @@ public class MatrixNxM extends Matrix<MatrixNxM> {
 		return difference;
 	}
 
-	/**
-	 * Calculate the scalar multiple of a matrix
-	 *
-	 * @param scalar the desired multiple
-	 *
-	 * @return the scaled matrix
-	 */
 	@Override
 	public MatrixNxM multiply (double scalar) {
 		MatrixNxM product = new MatrixNxM(this.rows, this.cols);
@@ -351,7 +332,7 @@ public class MatrixNxM extends Matrix<MatrixNxM> {
 
 
 
-	// MatrixNxM operations -----------------------------------------------------------------------------------------------
+	// Matrix operations -----------------------------------------------------------------------------------------------
 
 	@Override
 	public boolean equals(MatrixNxM other, double epsilon) {
@@ -405,6 +386,79 @@ public class MatrixNxM extends Matrix<MatrixNxM> {
 		}
 
 		return transpose;
+	}
+
+	@Override
+	public MatrixNxM remove (int row, int col) {
+		if (this.cols == 1 || this.rows == 1) {
+			return null;
+		}
+
+		MatrixNxM newMatrix = new MatrixNxM(this.rows - 1, this.cols - 1);
+
+		int newRow = 0;
+
+		for (int i = 0; i < this.rows; ++i) {
+			// Skip the row if it is to be removed
+			if (i == row) continue;
+
+			++newRow;
+			int newCol = 0;
+
+			for (int j = 0; j < this.cols; ++j) {
+				// Skip the column if it is to be removed
+				if (j == col) continue;
+
+				++newCol;
+				newMatrix.elements[newRow][newCol] = this.elements[i][j];
+			}
+		}
+
+		return newMatrix;
+	}
+
+	@Override
+	public Matrix removeRow (int row) {
+		if (this.rows == 1) {
+			return null;
+		}
+
+		MatrixNxM newMatrix = new MatrixNxM(this.rows - 1, this.cols);
+
+		int newRow = 0;
+
+		for (int i = 0; i < this.rows; ++i) {
+			// Skip the row if it is to be removed
+			if (i == row) continue;
+
+			++newRow;
+			System.arraycopy(this.elements[i], 0, newMatrix.elements[newRow], 0, this.cols);
+		}
+
+		return newMatrix;
+	}
+
+	@Override
+	public Matrix removeCol(int col) {
+		if (this.cols == 1) {
+			return null;
+		}
+
+		MatrixNxM newMatrix = new MatrixNxM(this.rows, this.cols - 1);
+
+		for (int i = 0; i < this.rows; ++i) {
+			int newCol = 0;
+
+			for (int j = 0; j < this.cols; ++j) {
+				// Skip the column if it is to be removed
+				if (j == col) continue;
+
+				++newCol;
+				newMatrix.elements[i][newCol] = this.elements[i][j];
+			}
+		}
+
+		return newMatrix;
 	}
 
 	/**

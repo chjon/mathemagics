@@ -122,6 +122,41 @@ public abstract class Matrix<M extends Matrix> implements LinearObject<M> {
 	 */
 	public abstract boolean isDiagonal ();
 
+	/**
+	 * Determine the rank of the matrix
+	 *
+	 * @return the rank of the matrix
+	 */
+	public abstract int rank ();
+
+	/**
+	 * Determine whether a matrix is in row echelon form
+	 *
+	 * @return true if the matrix is in REF
+	 *         false if the matrix is not in REF
+	 */
+	public abstract boolean isRef ();
+
+
+
+	// Mutators --------------------------------------------------------------------------------------------------------
+
+	/**
+	 * Swap the rows of a matrix
+	 *
+	 * @param row1 the index of the first row to swap
+	 * @param row2 the index of the second row to swap
+	 */
+	public abstract void swapRows (int row1, int row2);
+
+	/**
+	 * Swap the columns of a matrix
+	 *
+	 * @param col1 the index of the first column to swap
+	 * @param col2 the index of the second column to swap
+	 */
+	public abstract void swapCols (int col1, int col2);
+
 
 
 	// Matrix operations -----------------------------------------------------------------------------------------------
@@ -168,4 +203,40 @@ public abstract class Matrix<M extends Matrix> implements LinearObject<M> {
 	 * @return the transpose of the matrix
 	 */
 	public abstract Matrix transpose ();
+
+	/**
+	 * Remove a row and column from a matrix
+	 *
+	 * @param row the row to remove
+	 * @param col the column to remove
+	 *
+	 * @return the matrix with the specified rows and columns removed
+	 *         null if there are no rows and columns left
+	 */
+	public Matrix remove (int row, int col) {
+		Matrix noRow = removeRow(row);
+		if (noRow == null) {
+			return null;
+		}
+
+		return noRow.removeCol(col);
+	}
+
+	/**
+	 * Remove a row from a matrix
+	 *
+	 * @param row the index of the row to remove
+	 *
+	 * @return the matrix with the specified row removed
+	 */
+	public abstract Matrix removeRow (int row);
+
+	/**
+	 * Remove a column from a matrix
+	 *
+	 * @param col the index of the column to remove
+	 *
+	 * @return the matrix with the specified column removed
+	 */
+	public abstract Matrix removeCol (int col);
 }

@@ -56,19 +56,54 @@ public abstract class Vector<V extends Vector> extends Matrix<V> {
 	 */
 	@Override
 	public final double get (int row, int col) {
+		if (col != 0) {
+			throw new ArrayIndexOutOfBoundsException(col);
+		}
+
 		return get(row);
 	}
 
 	/**
 	 * Vectors only have one column, so we just return the vector
 	 *
-	 * @param col the index of the desired column - this is always ignored
+	 * @param col the index of the desired column
 	 *
 	 * @return the vector
 	 */
 	@Override
 	public final Vector<V> getCol (int col) {
+		if (col != 0) {
+			throw new ArrayIndexOutOfBoundsException(col);
+		}
+
 		return this;
+	}
+
+
+
+	// Matrix properties
+
+	/**
+	 * Vectors only have one column, so they must have a rank of 1
+	 */
+	@Override
+	public final int rank () {
+		return 1;
+	}
+
+
+
+	// Matrix mutators -------------------------------------------------------------------------------------------------
+
+	@Override
+	public final void swapCols(int col1, int col2) {
+		if (col1 != 0) {
+			throw new ArrayIndexOutOfBoundsException(col1);
+		} else if (col2 != 0) {
+			throw new ArrayIndexOutOfBoundsException(col2);
+		}
+
+		// Do nothing; vectors only have one column
 	}
 
 
@@ -81,6 +116,22 @@ public abstract class Vector<V extends Vector> extends Matrix<V> {
 	@Override
 	public final boolean isDiagonal () {
 		return isSquare();
+	}
+
+
+
+	// Matrix operations -----------------------------------------------------------------------------------------------
+
+	/**
+	 * Vectors only have one column, so it will be null after the column is removed
+	 *
+	 * @param col the index of the column to remove
+	 *
+	 * @return null
+	 */
+	@Override
+	public final Vector removeCol(int col) {
+		return null;
 	}
 
 
