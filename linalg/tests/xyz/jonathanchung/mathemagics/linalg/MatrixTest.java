@@ -154,8 +154,8 @@ public class MatrixTest {
 		});
 
 		try {
-			assertTrue(matrix1.equals(differenceMatrix.subtract(matrix1)));
-			assertTrue(differenceMatrix.equals(matrix1.subtract(matrix2)));
+			assertTrue(matrix1.equals(differenceMatrix.sub(matrix1)));
+			assertTrue(differenceMatrix.equals(matrix1.sub(matrix2)));
 		} catch (IncompatibleDimensionException ex) {
 			Assertions.fail("Dimensions are the same - IncompatibleDimensionException should not be thrown");
 		}

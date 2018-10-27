@@ -184,4 +184,19 @@ class PolynomialTest {
 		assertTrue(poly.differentiate().equals(Polynomial.ZERO));
 		assertTrue(Polynomial.ZERO.differentiate().equals(Polynomial.ZERO));
 	}
+
+	@Test
+	public void integrateTest () {
+		Polynomial poly           = new Polynomial(   1, 4, 15, 16, 15, 18, 49, 56, 45);
+		Polynomial antiDerivative = new Polynomial(0, 1, 2,  5,  4,  3,  3,  7,  7,  5);
+
+		assertTrue(poly.antiDifferentiate().equals(antiDerivative));
+	}
+
+	@Test
+	public void integrateConstantTest () {
+		Polynomial poly           = new Polynomial(314);
+		Polynomial antiDerivative = new Polynomial(0, 314);
+		assertTrue(poly.antiDifferentiate().equals(antiDerivative));
+	}
 }

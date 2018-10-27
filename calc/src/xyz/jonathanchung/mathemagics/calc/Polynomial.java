@@ -328,7 +328,7 @@ public class Polynomial implements
 
 		// Divide each term by its exponent
 		for (int i = 1; i < newCoeffs.length; ++i) {
-			newCoeffs[i] = this.coeffs[i - 1] / (i + 1);
+			newCoeffs[i] = this.coeffs[i - 1] / i;
 		}
 
 		return new Polynomial(newCoeffs, true);
