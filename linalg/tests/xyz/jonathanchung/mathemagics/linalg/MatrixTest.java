@@ -12,18 +12,18 @@ public class MatrixTest {
 
 	@Test
 	public void zeroDimensionConstructorTest () {
-		Matrix matrix = new Matrix(0, 0);
+		MatrixNxM matrix = new MatrixNxM(0, 0);
 		assertEquals(matrix.getRows(), 1);
 		assertEquals(matrix.getCols(), 1);
 	}
 
 	@Test
 	public void negativeDimensionConstructorTest () {
-		Matrix matrix = new Matrix(-15, 10);
+		MatrixNxM matrix = new MatrixNxM(-15, 10);
 		assertEquals(matrix.getRows(), 1);
 		assertEquals(matrix.getCols(), 10);
 
-		matrix = new Matrix(15, -1);
+		matrix = new MatrixNxM(15, -1);
 		assertEquals(matrix.getRows(), 15);
 		assertEquals(matrix.getCols(), 1);
 	}
@@ -36,7 +36,7 @@ public class MatrixTest {
 				{2, 6, 5},
 		};
 
-		Matrix matrix = new Matrix(vals);
+		MatrixNxM matrix = new MatrixNxM(vals);
 
 		for (int i = 0; i < matrix.getRows(); i++) {
 			for (int j = 0; j < matrix.getCols(); j++) {
@@ -53,7 +53,7 @@ public class MatrixTest {
 				{1, 1, 2, 3, 5, 8, 13, 21, 34},
 		};
 
-		Matrix matrix = new Matrix(vals);
+		MatrixNxM matrix = new MatrixNxM(vals);
 
 		for (int i = 0; i < matrix.getRows(); i++) {
 			for (int j = 0; j < matrix.getCols(); j++) {
@@ -68,13 +68,13 @@ public class MatrixTest {
 
 	@Test
 	public void matrixEqualityTest () {
-		Matrix matrix1 = new Matrix(new double[][] {
+		MatrixNxM matrix1 = new MatrixNxM(new double[][] {
 				{-1, -2, -3, -4, -5},
 				{-5, -4, -3, -2, -1},
 				{0,  -3,  8,  3, -2},
 		});
 
-		Matrix matrix2 = new Matrix(new double[][] {
+		MatrixNxM matrix2 = new MatrixNxM(new double[][] {
 				{-1, -2, -3, -4, -5},
 				{-5, -4, -3, -2, -1},
 				{ 0, -3,  8,  3, -2},
@@ -82,7 +82,7 @@ public class MatrixTest {
 
 		assertTrue(matrix1.equals(matrix2));
 
-		matrix2 = new Matrix(new double[][] {
+		matrix2 = new MatrixNxM(new double[][] {
 				{-1, -2, -3, -4, -5.001},
 				{-5, -4, -3, -2, -1.000},
 				{ 0, -3,  8,  3, -2.000},
@@ -94,13 +94,13 @@ public class MatrixTest {
 
 	@Test
 	public void matrixInequalityTest () {
-		Matrix matrix1 = new Matrix(new double[][] {
+		MatrixNxM matrix1 = new MatrixNxM(new double[][] {
 				{-1, -2, -3, -4, -5},
 				{-5, -4, -3, -2, -1},
 				{ 0, -3,  8,  3, -2},
 		});
 
-		Matrix matrix2 = new Matrix(new double[][] {
+		MatrixNxM matrix2 = new MatrixNxM(new double[][] {
 				{-1, -2.0, -3, -4, -5},
 				{-5, -4.3, -3, -2, -1},
 				{ 0, -3.0,  8,  3, -2},
@@ -111,19 +111,19 @@ public class MatrixTest {
 
 	@Test
 	public void matrixSumTest () {
-		Matrix matrix1 = new Matrix(new double[][] {
+		MatrixNxM matrix1 = new MatrixNxM(new double[][] {
 				{-1, -2, -3, -4, -5},
 				{-5, -4, -3, -2, -1},
 				{ 0, -3,  8,  3, -2},
 		});
 
-		Matrix matrix2 = new Matrix(new double[][] {
+		MatrixNxM matrix2 = new MatrixNxM(new double[][] {
 				{1, 2,  3,  4, 5},
 				{5, 4,  3,  2, 1},
 				{0, 3, -8, -3, 2},
 		});
 
-		Matrix sumMatrix = new Matrix(3, 5);
+		MatrixNxM sumMatrix = new MatrixNxM(3, 5);
 
 		try {
 			assertTrue(matrix1.equals(sumMatrix.add(matrix1)));
@@ -135,19 +135,19 @@ public class MatrixTest {
 
 	@Test
 	public void matrixDifferenceTest () {
-		Matrix matrix1 = new Matrix(new double[][] {
+		MatrixNxM matrix1 = new MatrixNxM(new double[][] {
 				{-1, -2, -3, -4, -5},
 				{-5, -4, -3, -2, -1},
 				{ 0, -3,  8,  3, -2},
 		});
 
-		Matrix matrix2 = new Matrix(new double[][] {
+		MatrixNxM matrix2 = new MatrixNxM(new double[][] {
 				{1, 2,  3,  4, 5},
 				{5, 4,  3,  2, 1},
 				{0, 3, -8, -3, 2},
 		});
 
-		Matrix differenceMatrix = new Matrix(new double[][] {
+		MatrixNxM differenceMatrix = new MatrixNxM(new double[][] {
 				{ -2, -4, -6, -8, -10},
 				{-10, -8, -6, -4,  -2},
 				{  0, -6, 16,  6,  -4},
@@ -163,13 +163,13 @@ public class MatrixTest {
 
 	@Test
 	public void matrixTransposeTest () {
-		Matrix matrix1 = new Matrix(new double[][] {
+		MatrixNxM matrix1 = new MatrixNxM(new double[][] {
 				{-1, -2, -3, -4, -5},
 				{-5, -4, -3, -2, -1},
 				{ 0, -3,  8,  3, -2},
 		});
 
-		Matrix matrix2 = new Matrix(new double[][] {
+		MatrixNxM matrix2 = new MatrixNxM(new double[][] {
 				{-1, -5,  0},
 				{-2, -4, -3},
 				{-3, -3,  8},
@@ -183,13 +183,13 @@ public class MatrixTest {
 
 	@Test
 	public void matrixProductTest () {
-		Matrix matrix1 = new Matrix(new double[][] {
+		MatrixNxM matrix1 = new MatrixNxM(new double[][] {
 				{-1, -2, -3, -4, -5},
 				{-5, -4, -3, -2, -1},
 				{ 0, -3,  8,  3, -2},
 		});
 
-		Matrix matrix2 = new Matrix(new double[][] {
+		MatrixNxM matrix2 = new MatrixNxM(new double[][] {
 				{ 55,  35, -20},
 				{ 35,  55, -16},
 				{-20, -16,  86},
@@ -205,7 +205,7 @@ public class MatrixTest {
 
 	@Test
 	public void matrixProductInvalidDimensionTest () {
-		Matrix matrix1 = new Matrix(new double[][] {
+		MatrixNxM matrix1 = new MatrixNxM(new double[][] {
 				{-1, -2, -3, -4, -5},
 				{-5, -4, -3, -2, -1},
 				{ 0, -3,  8,  3, -2},
@@ -221,13 +221,13 @@ public class MatrixTest {
 
 	@Test
 	public void matrixRefTest () {
-		Matrix matrix1 = new Matrix(new double[][] {
+		MatrixNxM matrix1 = new MatrixNxM(new double[][] {
 				{ 0, -3,  8,  3, -2},
 				{-5, -4, -3, -2, -1},
 				{-1, -2, -3, -4, -5},
 		});
 
-		Matrix ref = new Matrix(new double[][] {
+		MatrixNxM ref = new MatrixNxM(new double[][] {
 				{-5, -4, -3.0, -2.0, -1},
 				{ 0, -3,  8.0,  3.0, -2},
 				{ 0,  0, -5.6, -4.8, -4},
@@ -235,13 +235,13 @@ public class MatrixTest {
 
 		assertTrue(matrix1.ref().equals(ref));
 
-		Matrix matrix2 = new Matrix(new double[][] {
+		MatrixNxM matrix2 = new MatrixNxM(new double[][] {
 				{ 1,  2, 1},
 				{-2, -3, 1},
 				{ 3,  5, 0},
 		});
 
-		Matrix ref2 = new Matrix(new double[][] {
+		MatrixNxM ref2 = new MatrixNxM(new double[][] {
 				{3, 5,    0},
 				{0, 1/3d, 1},
 				{0, 0,    0},
@@ -252,13 +252,13 @@ public class MatrixTest {
 
 	@Test
 	public void matrixRankTest () {
-		Matrix matrix1 = new Matrix(new double[][] {
+		MatrixNxM matrix1 = new MatrixNxM(new double[][] {
 				{-5, -4, -3.0, -2.0, -1},
 				{ 0, -3,  8.0,  3.0, -2},
 				{ 0,  0,    0, -4.8, -4},
 		});
 
-		Matrix matrix2 = new Matrix(new double[][] {
+		MatrixNxM matrix2 = new MatrixNxM(new double[][] {
 				{-5, -4, -3.0, -2.0, -1},
 				{ 0, -3,  8.0,  3.0, -2},
 				{ 0, -6, 16.0,  6.0, -4},
@@ -270,7 +270,7 @@ public class MatrixTest {
 
 	@Test
 	public void matrixIsDiagonalTest () {
-		Matrix matrix = new Matrix(new double[][] {
+		MatrixNxM matrix = new MatrixNxM(new double[][] {
 				{1, 0, 0},
 				{0, 5, 0},
 				{0, 0, 7},
@@ -281,7 +281,7 @@ public class MatrixTest {
 
 	@Test
 	public void matrixIsNotDiagonalTest () {
-		Matrix matrix = new Matrix(new double[][] {
+		MatrixNxM matrix = new MatrixNxM(new double[][] {
 				{1, 0, 0},
 				{0, 5, 0},
 				{0, 1, 7},
@@ -292,7 +292,7 @@ public class MatrixTest {
 
 	@Test
 	public void matrixIsNotDiagonalDimensionsTest () {
-		Matrix matrix = new Matrix(new double[][] {
+		MatrixNxM matrix = new MatrixNxM(new double[][] {
 				{1, 0, 0, 0},
 				{0, 5, 0, 0},
 				{0, 0, 7, 0},
@@ -303,7 +303,7 @@ public class MatrixTest {
 
 	@Test
 	public void matrixIsRefTest () {
-		Matrix ref = new Matrix(new double[][] {
+		MatrixNxM ref = new MatrixNxM(new double[][] {
 				{-5, -4, -3.0, -2.0, -1},
 				{ 0, -3,  8.0,  3.0, -2},
 				{ 0,  0,    0, -4.8, -4},
@@ -314,7 +314,7 @@ public class MatrixTest {
 
 	@Test
 	public void matrixIsNotRefTest () {
-		Matrix ref = new Matrix(new double[][] {
+		MatrixNxM ref = new MatrixNxM(new double[][] {
 				{-5, -4, -3.0, -2.0, -1},
 				{ 0, -3,  8.0,  3.0, -2},
 				{ 0,  1,    0, -4.8, -4},
