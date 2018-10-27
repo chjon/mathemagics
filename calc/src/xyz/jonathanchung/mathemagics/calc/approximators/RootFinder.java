@@ -1,4 +1,7 @@
-package xyz.jonathanchung.mathemagics.calc;
+package xyz.jonathanchung.mathemagics.calc.approximators;
+
+import xyz.jonathanchung.mathemagics.calc.Function;
+import xyz.jonathanchung.mathemagics.calc.PrecisionUtils;
 
 public class RootFinder {
 	public static final RootFinder DEFAULT = new RootFinder();

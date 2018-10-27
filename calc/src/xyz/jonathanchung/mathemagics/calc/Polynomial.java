@@ -92,31 +92,6 @@ public class Polynomial implements
 	}
 
 	/**
-	 * Determine whether two polynomials are equal (have the same degree)
-	 *
-	 * @param other the polynomial to check with
-	 *
-	 * @return true if the polynomials are equal
-	 *         false if the polynomials are not equal
-	 */
-	public boolean equals (final Polynomial other) {
-		// Check if the other polynomial is null
-		if (other == null) {
-			return false;
-		}
-
-		// Make sure the polynomials are of the same degree
-		if (this.degree() != other.degree()) return false;
-
-		// Compare each coefficient
-		for (int i = 0; i < coeffs.length; ++i) {
-			if (this.coeffs[i] != other.coeffs[i]) return false;
-		}
-
-		return true;
-	}
-
-	/**
 	 * Get a string representation of the polynomial
 	 *
 	 * @return a string representation of the polynomial
@@ -343,6 +318,31 @@ public class Polynomial implements
 
 
 	// Polynomial operations -------------------------------------------------------------------------------------------
+
+	/**
+	 * Determine whether two polynomials are equal (have the same degree)
+	 *
+	 * @param other the polynomial to check with
+	 *
+	 * @return true if the polynomials are equal
+	 *         false if the polynomials are not equal
+	 */
+	public boolean equals (final Polynomial other) {
+		// Check if the other polynomial is null
+		if (other == null) {
+			return false;
+		}
+
+		// Make sure the polynomials are of the same degree
+		if (this.degree() != other.degree()) return false;
+
+		// Compare each coefficient
+		for (int i = 0; i < coeffs.length; ++i) {
+			if (this.coeffs[i] != other.coeffs[i]) return false;
+		}
+
+		return true;
+	}
 
 	/**
 	 * Multiply two polynomials

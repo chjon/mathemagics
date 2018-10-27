@@ -3,7 +3,14 @@ package xyz.jonathanchung.mathemagics.linalg;
 import java.util.Arrays;
 
 public class Vector extends Matrix {
-	double[] sorted = null;
+
+	// Fields ----------------------------------------------------------------------------------------------------------
+
+	private double[] sorted = null;
+
+
+
+	// Constructors ----------------------------------------------------------------------------------------------------
 
 	/**
 	 * The constructor for a vector
@@ -13,6 +20,10 @@ public class Vector extends Matrix {
 	public Vector(int n) {
 		super(n, 1);
 	}
+
+
+
+	// Accessors -------------------------------------------------------------------------------------------------------
 
 	/**
 	 * Get the element at a specific index
@@ -60,6 +71,10 @@ public class Vector extends Matrix {
 	public double mag () {
 		return Math.sqrt(mag2());
 	}
+
+
+
+	// Vector operations -----------------------------------------------------------------------------------------------
 
 	/**
 	 * Calculate the dot product of two vectors

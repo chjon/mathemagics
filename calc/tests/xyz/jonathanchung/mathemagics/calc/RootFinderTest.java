@@ -1,6 +1,7 @@
 package xyz.jonathanchung.mathemagics.calc;
 
 import org.junit.jupiter.api.Test;
+import xyz.jonathanchung.mathemagics.calc.approximators.RootFinder;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;

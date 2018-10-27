@@ -343,43 +343,7 @@ public class Matrix implements LinearObject<Matrix> {
 		}
 	}
 
-	// Matrix operations -----------------------------------------------------------------------------------------------
-
-	/**
-	 * Determine whether two matrices are equal (no error)
-	 *
-	 * @param other the matrix to compare with
-	 *
-	 * @return true if the matrices are equal
-	 *         false if the matrices are not equal
-	 */
-	public boolean equals(Matrix other) {
-		return equals(other, EPSILON);
-	}
-
-	/**
-	 * Determine whether two matrices are equal (with some acceptable error)
-	 *
-	 * @param other the matrix to compare with
-	 * @param epsilon the maximum acceptable relative error
-	 *
-	 * @return true if the matrices are equal
-	 *         false if the matrices are not equal
-	 */
-	public boolean equals(Matrix other, double epsilon) {
-		// Check for equal dimensions
-		if (this.rows != other.rows || this.cols != other.cols) {
-			return false;
-		}
-
-		for (int i = 0; i < this.rows; i++) {
-			for (int j = 0; j < this.cols; j++) {
-				if (!PrecisionUtils.equalsAbs(this.elements[i][j], other.elements[i][j], epsilon)) return false;
-			}
-		}
-
-		return true;
-	}
+	// Linear object operations ----------------------------------------------------------------------------------------
 
 	/**
 	 * Add a matrix to this one by adding their corresponding elements
@@ -438,6 +402,67 @@ public class Matrix implements LinearObject<Matrix> {
 	}
 
 	/**
+	 * Calculate the scalar multiple of a matrix
+	 *
+	 * @param scalar the desired multiple
+	 *
+	 * @return the scaled matrix
+	 */
+	@Override
+	public Matrix multiply (double scalar) {
+		Matrix product = new Matrix(this.rows, this.cols);
+
+		// Multiply each element by the scalar
+		for (int productRow = 0; productRow < product.rows; productRow++) {
+			for (int productCol = 0; productCol < product.cols; productCol++) {
+				product.elements[productRow][productCol] = this.elements[productRow][productCol] * scalar;
+			}
+		}
+
+		return product;
+	}
+
+
+
+	// Matrix operations -----------------------------------------------------------------------------------------------
+
+	/**
+	 * Determine whether two matrices are equal (no error)
+	 *
+	 * @param other the matrix to compare with
+	 *
+	 * @return true if the matrices are equal
+	 *         false if the matrices are not equal
+	 */
+	public boolean equals(Matrix other) {
+		return equals(other, EPSILON);
+	}
+
+	/**
+	 * Determine whether two matrices are equal (with some acceptable error)
+	 *
+	 * @param other the matrix to compare with
+	 * @param epsilon the maximum acceptable relative error
+	 *
+	 * @return true if the matrices are equal
+	 *         false if the matrices are not equal
+	 */
+	public boolean equals(Matrix other, double epsilon) {
+		// Check for equal dimensions
+		if (this.rows != other.rows || this.cols != other.cols) {
+			return false;
+		}
+
+		for (int i = 0; i < this.rows; i++) {
+			for (int j = 0; j < this.cols; j++) {
+				if (!PrecisionUtils.equalsAbs(this.elements[i][j], other.elements[i][j], epsilon)) return false;
+			}
+		}
+
+		return true;
+	}
+
+	/**
 	 * Calculate the product of two matrices; the value of each element of the matrix is calculated by taking the
 	 * corresponding dot products of the first matrix's row vectors with the second matrix's column vectors
 	 *
@@ -466,27 +491,6 @@ public class Matrix implements LinearObject<Matrix> {
 				}
 
 				product.elements[productRow][productCol] = sum;
-			}
-		}
-
-		return product;
-	}
-
-	/**
-	 * Calculate the scalar multiple of a matrix
-	 *
-	 * @param scalar the desired multiple
-	 *
-	 * @return the scaled matrix
-	 */
-	@Override
-	public Matrix multiply (double scalar) {
-		Matrix product = new Matrix(this.rows, this.cols);
-
-		// Multiply each element by the scalar
-		for (int productRow = 0; productRow < product.rows; productRow++) {
-			for (int productCol = 0; productCol < product.cols; productCol++) {
-				product.elements[productRow][productCol] = this.elements[productRow][productCol] * scalar;
 			}
 		}
 

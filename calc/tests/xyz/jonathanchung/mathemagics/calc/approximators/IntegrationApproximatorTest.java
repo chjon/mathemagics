@@ -1,6 +1,7 @@
-package xyz.jonathanchung.mathemagics.calc;
+package xyz.jonathanchung.mathemagics.calc.approximators;
 
 import org.junit.jupiter.api.Test;
+import xyz.jonathanchung.mathemagics.calc.Function;
 
 import static org.junit.jupiter.api.Assertions.*;
 

@@ -1,4 +1,6 @@
-package xyz.jonathanchung.mathemagics.calc;
+package xyz.jonathanchung.mathemagics.calc.approximators;
+
+import xyz.jonathanchung.mathemagics.calc.Function;
 
 public class IntegrationApproximator {
 	/**
