@@ -1,13 +1,29 @@
 package xyz.jonathanchung.mathemagics.calc;
 
-public class Polynomial implements Function {
+import xyz.jonathanchung.mathemagics.linalg.LinearObject;
+
+public class Polynomial implements
+		LinearObject<Polynomial>,
+		DifferentiableFunction<Polynomial>,
+		IntegrableFunction<Polynomial> {
+
+	// Constants -------------------------------------------------------------------------------------------------------
+
 	public static final Polynomial ZERO = new Polynomial(0);
 	public static final Polynomial ONE  = new Polynomial(1);
+
+
+
+	// Fields ----------------------------------------------------------------------------------------------------------
 
 	/**
 	 * Array of all the coefficients in increasing order by degree
 	 */
 	private final double[] coeffs;
+
+
+
+	// Constructors ----------------------------------------------------------------------------------------------------
 
 	/**
 	 * Constructor for a polynomial given coefficients
@@ -53,18 +69,9 @@ public class Polynomial implements Function {
 		System.arraycopy(coeffs, 0, this.coeffs, 0, degree + 1);
 	}
 
-	@Override
-	public double evaluate(double x) {
-		double ans = 0;
 
-		// Solve by Horner's rule
-		for (int i = coeffs.length - 1; i >= 0; --i) {
-			ans *= x;
-			ans += coeffs[i];
-		}
 
-		return ans;
-	}
+	// Accessors -------------------------------------------------------------------------------------------------------
 
 	/**
 	 * Get the degree of the polynomial
@@ -85,12 +92,63 @@ public class Polynomial implements Function {
 	}
 
 	/**
-	 * Add two polynomials
+	 * Determine whether two polynomials are equal (have the same degree)
 	 *
-	 * @param other the polynomial to add to this one
+	 * @param other the polynomial to check with
 	 *
-	 * @return the sum of the two polynomials
+	 * @return true if the polynomials are equal
+	 *         false if the polynomials are not equal
 	 */
+	public boolean equals (final Polynomial other) {
+		// Check if the other polynomial is null
+		if (other == null) {
+			return false;
+		}
+
+		// Make sure the polynomials are of the same degree
+		if (this.degree() != other.degree()) return false;
+
+		// Compare each coefficient
+		for (int i = 0; i < coeffs.length; ++i) {
+			if (this.coeffs[i] != other.coeffs[i]) return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Get a string representation of the polynomial
+	 *
+	 * @return a string representation of the polynomial
+	 */
+	@Override
+	public String toString() {
+		// Check if this is the zero polynomial
+		if (isZero()) {
+			return "0";
+		}
+
+		StringBuilder sb = new StringBuilder();
+
+		for (int i = 0; i < coeffs.length; ++i) {
+			double coeff = coeffs[i];
+			if (coeff == 0) continue;
+
+			if (coeff > 0) {
+				sb.append("+");
+			}
+
+			sb.append(coeff).append(" x^(").append(i).append(") ");
+		}
+
+		return sb.toString();
+	}
+
+
+
+	// Linear object operations ----------------------------------------------------------------------------------------
+
+	@Override
 	public Polynomial add (final Polynomial other) {
 		// Check if either polynomial is zero
 		if (this.isZero()) {
@@ -141,13 +199,7 @@ public class Polynomial implements Function {
 		return new Polynomial(newCoeffs, true);
 	}
 
-	/**
-	 * Subtract one polynomial from another two polynomials
-	 *
-	 * @param other the polynomial to subtract from this one
-	 *
-	 * @return the difference of the two polynomials
-	 */
+	@Override
 	public Polynomial sub (final Polynomial other) {
 		// Check if either polynomial is zero
 		if (this.isZero()) {
@@ -199,6 +251,100 @@ public class Polynomial implements Function {
 	}
 
 	/**
+	 * Multiply the polynomial by a scalar
+	 *
+	 * @param scalar the scalar by which to multiply the polynomial
+	 *
+	 * @return the product of the multiplication of the polynomial and the scalar
+	 */
+	@Override
+	public Polynomial multiply (final double scalar) {
+		// Check for zeros
+		if (scalar == 0 || isZero()) {
+			return ZERO;
+		}
+
+		// Create an array to hold the new coefficients
+		final double[] resultCoeffs = new double[this.coeffs.length];
+
+		// Multiply every term in the polynomial by the scalar
+		for (int i = 0; i < this.coeffs.length; ++i) {
+			resultCoeffs[i] = this.coeffs[i] * scalar;
+		}
+
+		return new Polynomial(resultCoeffs, true);
+	}
+
+
+
+	// Function operations ---------------------------------------------------------------------------------------------
+
+	@Override
+	public double evaluate(double x) {
+		double ans = 0;
+
+		// Solve by Horner's rule
+		for (int i = coeffs.length - 1; i >= 0; --i) {
+			ans *= x;
+			ans += coeffs[i];
+		}
+
+		return ans;
+	}
+
+
+
+	// Differentiable function operations ------------------------------------------------------------------------------
+
+	@Override
+	public Polynomial differentiate () {
+		// The derivative of a constant is zero
+		if (this.coeffs.length == 1) {
+			return Polynomial.ZERO;
+		}
+
+		final double[] newCoeffs = new double[this.coeffs.length - 1];
+
+		// Multiply each term by its exponent
+		for (int i = 0; i < newCoeffs.length; ++i) {
+			newCoeffs[i] = this.coeffs[i + 1] * (i + 1);
+		}
+
+		return new Polynomial(newCoeffs, true);
+	}
+
+
+
+	// Integrable function operations ----------------------------------------------------------------------------------
+
+	@Override
+	public Polynomial antiDifferentiate() {
+		// The anti-derivative of zero is a constant
+		if (this.isZero()) {
+			return Polynomial.ZERO;
+		}
+
+		final double[] newCoeffs = new double[this.coeffs.length + 1];
+
+		// Divide each term by its exponent
+		for (int i = 1; i < newCoeffs.length; ++i) {
+			newCoeffs[i] = this.coeffs[i - 1] / (i + 1);
+		}
+
+		return new Polynomial(newCoeffs, true);
+	}
+
+	@Override
+	public double integrate(double a, double b) {
+		Polynomial antiDerivative = antiDifferentiate();
+		return antiDerivative.evaluate(b) - antiDerivative.evaluate(a);
+	}
+
+
+
+	// Polynomial operations -------------------------------------------------------------------------------------------
+
+	/**
 	 * Multiply two polynomials
 	 *
 	 * @param other the polynomial to multiply by
@@ -220,30 +366,6 @@ public class Polynomial implements Function {
 			for (int j = 0; j < other.coeffs.length; ++j) {
 				resultCoeffs[i + j] += this.coeffs[i] * other.coeffs[j];
 			}
-		}
-
-		return new Polynomial(resultCoeffs, true);
-	}
-
-	/**
-	 * Multiply the polynomial by a scalar
-	 *
-	 * @param scalar the scalar by which to multiply the polynomial
-	 *
-	 * @return the product of the multiplication of the polynomial and the scalar
-	 */
-	public Polynomial multiply (final double scalar) {
-		// Check for zeros
-		if (scalar == 0 || isZero()) {
-			return ZERO;
-		}
-
-		// Create an array to hold the new coefficients
-		final double[] resultCoeffs = new double[this.coeffs.length];
-
-		// Multiply every term in the polynomial by the scalar
-		for (int i = 0; i < this.coeffs.length; ++i) {
-			resultCoeffs[i] = this.coeffs[i] * scalar;
 		}
 
 		return new Polynomial(resultCoeffs, true);
@@ -321,86 +443,5 @@ public class Polynomial implements Function {
 		}
 
 		return new Polynomial(resultCoeffs, true);
-	}
-
-	/**
-	 * Differentiate the polynomial
-	 *
-	 * @return the polynomial's derivative
-	 */
-	public Polynomial differentiate () {
-		// The derivative of a constant is zero
-		if (this.coeffs.length == 1) {
-			return Polynomial.ZERO;
-		}
-
-		final double[] newCoeffs = new double[this.coeffs.length - 1];
-
-		// Multiply each term by its exponent
-		for (int i = 0; i < newCoeffs.length; ++i) {
-			newCoeffs[i] = this.coeffs[i + 1] * (i + 1);
-		}
-
-		return new Polynomial(newCoeffs, true);
-	}
-
-	/**
-	 * Determine whether two polynomials are equal (have the same degree)
-	 *
-	 * @param other the polynomial to check with
-	 *
-	 * @return true if the polynomials are equal
-	 *         false if the polynomials are not equal
-	 */
-	public boolean equals (final Polynomial other) {
-		// Check if the other polynomial is null
-		if (other == null) {
-			return false;
-		}
-
-		// Make sure the polynomials are of the same degree
-		if (this.degree() != other.degree()) return false;
-
-		// Compare each coefficient
-		for (int i = 0; i < coeffs.length; ++i) {
-			if (this.coeffs[i] != other.coeffs[i]) return false;
-		}
-
-		return true;
-	}
-
-	/**
-	 * Get a string representation of the polynomial
-	 *
-	 * @return a string representation of the polynomial
-	 */
-	@Override
-	public String toString() {
-		// Check if this is the zero polynomial
-		if (isZero()) {
-			return "0";
-		}
-
-		StringBuilder sb = new StringBuilder();
-
-		for (int i = 0; i < coeffs.length; ++i) {
-			double coeff = coeffs[i];
-			if (coeff == 0) continue;
-
-			if (coeff > 0) {
-				sb.append("+");
-			}
-
-			sb.append(coeff).append(" x^(").append(i).append(") ");
-		}
-
-		return sb.toString();
-	}
-
-	/**
-	 * The class {@code DivisionByZeroException} is thrown when a division by zero is attempted
-	 */
-	public class DivisionByZeroException extends RuntimeException {
-
 	}
 }

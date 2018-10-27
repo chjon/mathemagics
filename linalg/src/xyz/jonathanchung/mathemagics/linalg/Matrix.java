@@ -5,11 +5,16 @@ import xyz.jonathanchung.mathemagics.calc.PrecisionUtils;
 /**
  * This class describes an n * m matrix of numbers
  */
-public class Matrix {
+public class Matrix implements LinearObject<Matrix> {
+
+	// Constants -------------------------------------------------------------------------------------------------------
+
 	/**
 	 * The acceptable error for float equality checks
 	 */
 	static double EPSILON = 1e-10;
+
+
 
 	// Fields ----------------------------------------------------------------------------------------------------------
 
@@ -385,6 +390,7 @@ public class Matrix {
 	 *
 	 * @throws IncompatibleDimensionException when the matrices do not have the same dimensions
 	 */
+	@Override
 	public Matrix add (Matrix other) throws IncompatibleDimensionException {
 		//Check if the matrices have the same dimensions
 		if (this.rows != other.rows || this.cols != other.cols) {
@@ -412,7 +418,8 @@ public class Matrix {
 	 *
 	 * @throws IncompatibleDimensionException when the matrices do not have the same dimensions
 	 */
-	public Matrix subtract (Matrix other) throws IncompatibleDimensionException {
+	@Override
+	public Matrix sub (Matrix other) throws IncompatibleDimensionException {
 		//Check if the matrices have the same dimensions
 		if (this.rows != other.rows || this.cols != other.cols) {
 			throw new IncompatibleDimensionException(this, other);
@@ -472,6 +479,7 @@ public class Matrix {
 	 *
 	 * @return the scaled matrix
 	 */
+	@Override
 	public Matrix multiply (double scalar) {
 		Matrix product = new Matrix(this.rows, this.cols);
 
