@@ -77,7 +77,7 @@ public class Matrix2x2 extends MatrixNxN {
 	}
 
 	@Override
-	public double determinant() {
+	public double determinant () {
 		return (elements[0][0] * elements[1][1]) - (elements[0][1] * elements[1][0]);
 	}
 

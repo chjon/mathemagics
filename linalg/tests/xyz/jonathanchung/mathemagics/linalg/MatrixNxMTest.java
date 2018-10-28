@@ -4,11 +4,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import xyz.jonathanchung.mathemagics.calc.PrecisionUtils;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class MatrixTest {
+public class MatrixNxMTest {
 
 	@Test
 	public void zeroDimensionConstructorTest () {
@@ -321,5 +319,94 @@ public class MatrixTest {
 		});
 
 		assertFalse(ref.isRef());
+	}
+
+	@Test
+	public void matrixRemove () {
+		MatrixNxM matrix = new MatrixNxM(new double[][] {
+				{1, 2, 3, 4, 5},
+				{6, 7, 8, 9, 0},
+				{3, 4, 5, 6, 7},
+		});
+
+		MatrixNxM removed = new MatrixNxM(new double[][] {
+				{7, 8, 9, 0},
+				{4, 5, 6, 7},
+		});
+
+		assertTrue(removed.equals(matrix.remove(0, 0)));
+	}
+
+	@Test
+	public void matrixRemoveToNull () {
+		MatrixNxM row = new MatrixNxM(new double[][] {
+				{1, 2, 3, 4, 5},
+		});
+
+		MatrixNxM col = new MatrixNxM(new double[][] {
+				{1},
+				{2},
+				{3},
+				{4},
+				{5},
+		});
+
+		assertNull(row.remove(0, 0));
+		assertNull(col.remove(0, 0));
+	}
+
+	@Test
+	public void matrixRemoveRow () {
+		MatrixNxM matrix = new MatrixNxM(new double[][] {
+				{1, 2, 3, 4, 5},
+				{6, 7, 8, 9, 0},
+				{3, 4, 5, 6, 7},
+		});
+
+		MatrixNxM removed = new MatrixNxM(new double[][] {
+				{1, 2, 3, 4, 5},
+				{3, 4, 5, 6, 7},
+		});
+
+		assertTrue(removed.equals(matrix.removeRow(1)));
+	}
+
+	@Test
+	public void matrixRemoveRowToNull () {
+		MatrixNxM matrix = new MatrixNxM(new double[][] {
+				{1, 2, 3, 4, 5},
+		});
+
+		assertNull(matrix.removeRow(0));
+	}
+
+	@Test
+	public void matrixRemoveCol () {
+		MatrixNxM matrix = new MatrixNxM(new double[][] {
+				{1, 2, 3, 4, 5},
+				{6, 7, 8, 9, 0},
+				{3, 4, 5, 6, 7},
+		});
+
+		MatrixNxM removed = new MatrixNxM(new double[][] {
+				{1, 3, 4, 5},
+				{6, 8, 9, 0},
+				{3, 5, 6, 7},
+		});
+
+		assertTrue(removed.equals(matrix.removeCol(1)));
+	}
+
+	@Test
+	public void matrixRemoveColToNull () {
+		MatrixNxM matrix = new MatrixNxM(new double[][] {
+				{1},
+				{2},
+				{3},
+				{4},
+				{5},
+		});
+
+		assertNull(matrix.removeCol(0));
 	}
 }

@@ -89,16 +89,17 @@ public class MatrixNxN extends MatrixNxM {
 			// Skip the row if it is to be removed
 			if (i == row) continue;
 
-			++newRow;
 			int newCol = 0;
 
 			for (int j = 0; j < this.cols; ++j) {
 				// Skip the column if it is to be removed
 				if (j == col) continue;
 
-				++newCol;
 				newMatrix.elements[newRow][newCol] = this.elements[i][j];
+				++newCol;
 			}
+
+			++newRow;
 		}
 
 		return newMatrix;

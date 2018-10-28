@@ -402,23 +402,24 @@ public class MatrixNxM extends Matrix<MatrixNxM> {
 			// Skip the row if it is to be removed
 			if (i == row) continue;
 
-			++newRow;
 			int newCol = 0;
 
 			for (int j = 0; j < this.cols; ++j) {
 				// Skip the column if it is to be removed
 				if (j == col) continue;
 
-				++newCol;
 				newMatrix.elements[newRow][newCol] = this.elements[i][j];
+				++newCol;
 			}
+
+			++newRow;
 		}
 
 		return newMatrix;
 	}
 
 	@Override
-	public Matrix removeRow (int row) {
+	public MatrixNxM removeRow (int row) {
 		if (this.rows == 1) {
 			return null;
 		}
@@ -431,15 +432,15 @@ public class MatrixNxM extends Matrix<MatrixNxM> {
 			// Skip the row if it is to be removed
 			if (i == row) continue;
 
-			++newRow;
 			System.arraycopy(this.elements[i], 0, newMatrix.elements[newRow], 0, this.cols);
+			++newRow;
 		}
 
 		return newMatrix;
 	}
 
 	@Override
-	public Matrix removeCol(int col) {
+	public MatrixNxM removeCol(int col) {
 		if (this.cols == 1) {
 			return null;
 		}
@@ -453,8 +454,8 @@ public class MatrixNxM extends Matrix<MatrixNxM> {
 				// Skip the column if it is to be removed
 				if (j == col) continue;
 
-				++newCol;
 				newMatrix.elements[i][newCol] = this.elements[i][j];
+				++newCol;
 			}
 		}
 
