@@ -254,6 +254,12 @@ public class Polynomial implements
 
 	// Function operations ---------------------------------------------------------------------------------------------
 
+
+	@Override
+	public boolean canEvaluate() {
+		return true;
+	}
+
 	@Override
 	public double evaluate(double x) {
 		double ans = 0;

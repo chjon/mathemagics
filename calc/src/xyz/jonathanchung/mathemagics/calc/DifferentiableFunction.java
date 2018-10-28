@@ -5,7 +5,7 @@ package xyz.jonathanchung.mathemagics.calc;
  *
  * @param <T> the object that implements this interface
  */
-public interface DifferentiableFunction <T> extends Function {
+public interface DifferentiableFunction<T> extends Function {
 	/**
 	 * Differentiate the function
 	 *

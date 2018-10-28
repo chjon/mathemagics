@@ -13,8 +13,20 @@ public class RootFinderTest {
 
 	@Test
 	public void newtonsRootTest () {
-		final Function f  = (x) -> (x * x + 10 * x - 100);
-		final Function df = (x) -> (2 * x + 10);
+		final Function f  = new FunctionImpl() {
+			@Override
+			public double evaluate(double x) {
+				return x * x + 10 * x - 100;
+			}
+		};
+
+		final Function df = new FunctionImpl() {
+			@Override
+			public double evaluate(double x) {
+				return 2 * x + 10;
+			}
+		};
+
 		final double root = 6.1803398874989;
 
 		assertEquals(root, RF.newtonsMethod(f, df, 5), EXPECTED_PRECISION);
@@ -23,8 +35,19 @@ public class RootFinderTest {
 
 	@Test
 	public void newtonsNoRootTest () {
-		final Function f  = (x) -> (x * x + 10);
-		final Function df = (x) -> (2 * x);
+		final Function f  = new FunctionImpl() {
+			@Override
+			public double evaluate(double x) {
+				return x * x + 10;
+			}
+		};
+
+		final Function df = new FunctionImpl() {
+			@Override
+			public double evaluate(double x) {
+				return 2 * x;
+			}
+		};
 
 		assertTrue(Double.isNaN(RF.newtonsMethod(f, df, 5)));
 		assertEquals(RF.getNumIterations(), RF.getMaxIterations());
@@ -32,7 +55,13 @@ public class RootFinderTest {
 
 	@Test
 	public void bisectionRootTest () {
-		final Function f  = (x) -> (x * x + 10 * x - 100);
+		final Function f  = new FunctionImpl() {
+			@Override
+			public double evaluate(double x) {
+				return x * x + 10 * x - 100;
+			}
+		};
+
 		final double root = 6.1803398874989;
 
 		assertEquals(root, RF.bisectionMethod(f, 0, 100), EXPECTED_PRECISION);
@@ -41,7 +70,12 @@ public class RootFinderTest {
 
 	@Test
 	public void bisectionNoRootTest () {
-		final Function f  = (x) -> (x * x + 10);
+		final Function f  = new FunctionImpl() {
+			@Override
+			public double evaluate(double x) {
+				return x * x + 10;
+			}
+		};
 
 		assertTrue(Double.isNaN(RF.bisectionMethod(f, 0, 100)));
 		assertEquals(RF.getNumIterations(), 0);
@@ -49,7 +83,13 @@ public class RootFinderTest {
 
 	@Test
 	public void secantRootTest () {
-		final Function f  = (x) -> (x * x + 10 * x - 100);
+		final Function f  = new FunctionImpl() {
+			@Override
+			public double evaluate(double x) {
+				return x * x + 10 * x - 100;
+			}
+		};
+
 		final double root = 6.1803398874989;
 
 		assertEquals(root, RF.secantMethod(f, 0, 100), EXPECTED_PRECISION);
@@ -58,7 +98,12 @@ public class RootFinderTest {
 
 	@Test
 	public void secantNoRootTest () {
-		final Function f  = (x) -> (x * x + 10);
+		final Function f  = new FunctionImpl() {
+			@Override
+			public double evaluate(double x) {
+				return x * x + 10;
+			}
+		};
 
 		assertTrue(Double.isNaN(RF.secantMethod(f, 0, 100)));
 		assertEquals(RF.getNumIterations(), 0);
@@ -66,7 +111,13 @@ public class RootFinderTest {
 
 	@Test
 	public void fixedPointRootTest () {
-		final Function f = (x) -> (Math.sqrt(100 - 10 * x));
+		final Function f = new FunctionImpl() {
+			@Override
+			public double evaluate(double x) {
+				return Math.sqrt(100 - 10 * x);
+			}
+		};
+
 		final double root = 6.1803398874989;
 
 		assertEquals(root, RF.fixedPointIteration(f, 5), EXPECTED_PRECISION);
@@ -75,7 +126,12 @@ public class RootFinderTest {
 
 	@Test
 	public void fixedPointNoRootTest () {
-		final Function f = (x) -> (Math.sqrt(-10));
+		final Function f  = new FunctionImpl() {
+			@Override
+			public double evaluate(double x) {
+				return Math.sqrt(-10);
+			}
+		};
 
 		assertTrue(Double.isNaN(RF.fixedPointIteration(f, 5)));
 		assertEquals(RF.getNumIterations(), RF.getMaxIterations());

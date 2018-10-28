@@ -5,7 +5,7 @@ package xyz.jonathanchung.mathemagics.calc;
  *
  * @param <T> the object that implements this interface
  */
-public interface IntegrableFunction <T> extends Function {
+public interface IntegrableFunction<T> extends Function {
 	/**
 	 * Find the anti-derivative of the function (+C is assumed to be 0)
 	 *
