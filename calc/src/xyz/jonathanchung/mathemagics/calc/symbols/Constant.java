@@ -16,6 +16,11 @@ public final class Constant implements
 	 */
 	public static final Constant ZERO = new Constant(0);
 
+	/**
+	 * The one constant
+	 */
+	public static final Constant ONE = new Constant(1);
+
 
 
 	// Fields ----------------------------------------------------------------------------------------------------------
